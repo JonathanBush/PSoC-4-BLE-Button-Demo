@@ -1,0 +1,2143 @@
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m0
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 0
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"thermometer.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.Initialize_1_wire,"ax",%progbits
+  20              		.align	2
+  21              		.global	Initialize_1_wire
+  22              		.code	16
+  23              		.thumb_func
+  24              		.type	Initialize_1_wire, %function
+  25              	Initialize_1_wire:
+  26              	.LFB36:
+  27              		.file 1 "thermometer.c"
+   1:thermometer.c **** /* Adapted from project "PSoC4: Bit Banging 1 Wire Protocol (DS18B20 Thermometer)"
+   2:thermometer.c ****  * by Vasanth R S (https://www.hackster.io/vsrs/psoc4-bit-banging-1-wire-protocol-ds18b20-thermomet
+   3:thermometer.c ****  *
+   4:thermometer.c ****  * EGR 304 Team 24
+   5:thermometer.c ****  * Jonathan Bush
+   6:thermometer.c ****  *
+   7:thermometer.c ****  * Provides interface for reading temperature sensor.
+   8:thermometer.c ****  */
+   9:thermometer.c **** 
+  10:thermometer.c **** #include "project.h"
+  11:thermometer.c **** #include "stdio.h"
+  12:thermometer.c **** 
+  13:thermometer.c **** #define RST_TIME 480
+  14:thermometer.c **** #define HALF_TIME_SLOT 30
+  15:thermometer.c **** #define TIME_SLOT 60
+  16:thermometer.c **** #define RCVRY_TIME 20
+  17:thermometer.c **** #define WRITE_0_TIME 60
+  18:thermometer.c **** #define WRITE_1_TIME 10
+  19:thermometer.c **** #define READ_INIT_DLY 5
+  20:thermometer.c **** #define READ_VALID_DLY 5
+  21:thermometer.c **** 
+  22:thermometer.c **** #define SKIP_ADDR_CMND 0xCC
+  23:thermometer.c **** #define WRITE_SC_PAD   0x4E
+  24:thermometer.c **** #define RESOL_12BIT 0x7F
+  25:thermometer.c **** #define START_CONVERT 0x44
+  26:thermometer.c **** #define READ_SC_PAD 0xBE
+  27:thermometer.c **** #define SETUP_DLY 1000
+  28:thermometer.c **** /*******************************************************************************
+  29:thermometer.c ****     * Function Name: Initialize_1_wire
+  30:thermometer.c ****     ****************************************************************************//**
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 2
+
+
+  31:thermometer.c ****     *
+  32:thermometer.c ****     * \initializes the 1 wire communication, Master pulls the channel low for 480us atleast.
+  33:thermometer.c ****     * For which the slaves will reply with a 0, within one time slot.
+  34:thermometer.c ****     *
+  35:thermometer.c ****     * <b>Note</b> Done initially to find the presence of devices in the network
+  36:thermometer.c ****     *
+  37:thermometer.c ****     *
+  38:thermometer.c ****     * \param mode
+  39:thermometer.c ****     * no parameter
+  40:thermometer.c ****     *
+  41:thermometer.c ****     * \return
+  42:thermometer.c ****     *  returns the status.
+  43:thermometer.c ****     *
+  44:thermometer.c **** *********************************************************************************************/
+  45:thermometer.c **** 
+  46:thermometer.c **** uint8 Initialize_1_wire()
+  47:thermometer.c **** {
+  28              		.loc 1 47 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32 0000 10B5     		push	{r4, lr}
+  33              		.cfi_def_cfa_offset 8
+  34              		.cfi_offset 4, -8
+  35              		.cfi_offset 14, -4
+  48:thermometer.c **** uint8 status;
+  49:thermometer.c **** Wire1_Write(0);
+  36              		.loc 1 49 0
+  37 0002 0020     		movs	r0, #0
+  38 0004 FFF7FEFF 		bl	Wire1_Write
+  39              	.LVL0:
+  50:thermometer.c **** 
+  51:thermometer.c **** /*  Minimum reset time for 1-Wire Protocol  */
+  52:thermometer.c **** CyDelayUs(RST_TIME);
+  40              		.loc 1 52 0
+  41 0008 F020     		movs	r0, #240
+  42 000a 4000     		lsls	r0, r0, #1
+  43 000c FFF7FEFF 		bl	CyDelayUs
+  44              	.LVL1:
+  53:thermometer.c **** Wire1_Write(1);
+  45              		.loc 1 53 0
+  46 0010 0120     		movs	r0, #1
+  47 0012 FFF7FEFF 		bl	Wire1_Write
+  48              	.LVL2:
+  54:thermometer.c **** /* Slave should respond within one time slot(60us) */
+  55:thermometer.c **** CyDelayUs(HALF_TIME_SLOT);
+  49              		.loc 1 55 0
+  50 0016 1E20     		movs	r0, #30
+  51 0018 FFF7FEFF 		bl	CyDelayUs
+  52              	.LVL3:
+  56:thermometer.c **** status = Wire1_Read();
+  53              		.loc 1 56 0
+  54 001c FFF7FEFF 		bl	Wire1_Read
+  55              	.LVL4:
+  57:thermometer.c **** return status;
+  58:thermometer.c **** }
+  56              		.loc 1 58 0
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 3
+
+
+  57              		@ sp needed
+  58 0020 10BD     		pop	{r4, pc}
+  59              		.cfi_endproc
+  60              	.LFE36:
+  61              		.size	Initialize_1_wire, .-Initialize_1_wire
+  62 0022 C046     		.section	.text.Write_bit_1_wire,"ax",%progbits
+  63              		.align	2
+  64              		.global	Write_bit_1_wire
+  65              		.code	16
+  66              		.thumb_func
+  67              		.type	Write_bit_1_wire, %function
+  68              	Write_bit_1_wire:
+  69              	.LFB37:
+  59:thermometer.c **** 
+  60:thermometer.c **** /*******************************************************************************
+  61:thermometer.c ****     * Function Name: Write_bit_1_wire
+  62:thermometer.c ****     ****************************************************************************//**
+  63:thermometer.c ****     *
+  64:thermometer.c ****     * \Master Writes one bit of data to the slave
+  65:thermometer.c ****     * 
+  66:thermometer.c ****     * <b>Note</b> All master writes are done based on this function
+  67:thermometer.c ****     *
+  68:thermometer.c ****     *
+  69:thermometer.c ****     * \param mode
+  70:thermometer.c ****     * 1 bit write data
+  71:thermometer.c ****     *
+  72:thermometer.c ****     * \return
+  73:thermometer.c ****     *  void function
+  74:thermometer.c ****     *
+  75:thermometer.c **** *********************************************************************************************/
+  76:thermometer.c **** void Write_bit_1_wire(uint8 value)
+  77:thermometer.c **** {   
+  70              		.loc 1 77 0
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              	.LVL5:
+  75 0000 10B5     		push	{r4, lr}
+  76              		.cfi_def_cfa_offset 8
+  77              		.cfi_offset 4, -8
+  78              		.cfi_offset 14, -4
+  79 0002 0400     		movs	r4, r0
+  78:thermometer.c ****     /* Minimum recovery time 1us between write steps in ncessary, 20us is used */
+  79:thermometer.c ****     CyDelayUs(RCVRY_TIME);
+  80              		.loc 1 79 0
+  81 0004 1420     		movs	r0, #20
+  82              	.LVL6:
+  83 0006 FFF7FEFF 		bl	CyDelayUs
+  84              	.LVL7:
+  80:thermometer.c ****     /* Write is initiated from this step*/
+  81:thermometer.c ****     Wire1_Write(0); 
+  85              		.loc 1 81 0
+  86 000a 0020     		movs	r0, #0
+  87 000c FFF7FEFF 		bl	Wire1_Write
+  88              	.LVL8:
+  82:thermometer.c ****     
+  83:thermometer.c ****     if(value==0)
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 4
+
+
+  89              		.loc 1 83 0
+  90 0010 002C     		cmp	r4, #0
+  91 0012 03D1     		bne	.L3
+  84:thermometer.c ****     {
+  85:thermometer.c ****         /* Minimum 60us for logic0 */
+  86:thermometer.c ****         CyDelayUs(WRITE_0_TIME);
+  92              		.loc 1 86 0
+  93 0014 3C20     		movs	r0, #60
+  94 0016 FFF7FEFF 		bl	CyDelayUs
+  95              	.LVL9:
+  96 001a 02E0     		b	.L4
+  97              	.L3:
+  87:thermometer.c ****     }
+  88:thermometer.c ****     else
+  89:thermometer.c ****     {
+  90:thermometer.c ****         /* Release to 1 before 15us for logic1 */
+  91:thermometer.c ****         CyDelayUs(WRITE_1_TIME);
+  98              		.loc 1 91 0
+  99 001c 0A20     		movs	r0, #10
+ 100 001e FFF7FEFF 		bl	CyDelayUs
+ 101              	.LVL10:
+ 102              	.L4:
+  92:thermometer.c ****     }
+  93:thermometer.c ****     Wire1_Write(1); 
+ 103              		.loc 1 93 0
+ 104 0022 0120     		movs	r0, #1
+ 105 0024 FFF7FEFF 		bl	Wire1_Write
+ 106              	.LVL11:
+  94:thermometer.c **** }
+ 107              		.loc 1 94 0
+ 108              		@ sp needed
+ 109 0028 10BD     		pop	{r4, pc}
+ 110              		.cfi_endproc
+ 111              	.LFE37:
+ 112              		.size	Write_bit_1_wire, .-Write_bit_1_wire
+ 113 002a C046     		.section	.text.Read_bit_1_wire,"ax",%progbits
+ 114              		.align	2
+ 115              		.global	Read_bit_1_wire
+ 116              		.code	16
+ 117              		.thumb_func
+ 118              		.type	Read_bit_1_wire, %function
+ 119              	Read_bit_1_wire:
+ 120              	.LFB38:
+  95:thermometer.c **** 
+  96:thermometer.c **** /*******************************************************************************
+  97:thermometer.c ****     * Function Name: Read_bit_1_wire
+  98:thermometer.c ****     ****************************************************************************//**
+  99:thermometer.c ****     *
+ 100:thermometer.c ****     * \Master Reads one bit of data from slave
+ 101:thermometer.c ****     * 
+ 102:thermometer.c ****     * <b>Note</b> All master read actions are done based on this function. Master initiates read by
+ 103:thermometer.c ****     * Data should be read before 15us
+ 104:thermometer.c ****     *
+ 105:thermometer.c ****     * \param mode
+ 106:thermometer.c ****     * no parameter
+ 107:thermometer.c ****     *
+ 108:thermometer.c ****     * \return
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 5
+
+
+ 109:thermometer.c ****     *  1 bit data from slave
+ 110:thermometer.c ****     *
+ 111:thermometer.c **** *********************************************************************************************/
+ 112:thermometer.c **** uint8 Read_bit_1_wire()
+ 113:thermometer.c **** {
+ 121              		.loc 1 113 0
+ 122              		.cfi_startproc
+ 123              		@ args = 0, pretend = 0, frame = 0
+ 124              		@ frame_needed = 0, uses_anonymous_args = 0
+ 125 0000 10B5     		push	{r4, lr}
+ 126              		.cfi_def_cfa_offset 8
+ 127              		.cfi_offset 4, -8
+ 128              		.cfi_offset 14, -4
+ 114:thermometer.c ****     /* Minimum recovery time 1us */
+ 115:thermometer.c ****     CyDelayUs(RCVRY_TIME);
+ 129              		.loc 1 115 0
+ 130 0002 1420     		movs	r0, #20
+ 131 0004 FFF7FEFF 		bl	CyDelayUs
+ 132              	.LVL12:
+ 116:thermometer.c ****     /* Initiate read by pulling line low */
+ 117:thermometer.c ****     Wire1_Write(0);
+ 133              		.loc 1 117 0
+ 134 0008 0020     		movs	r0, #0
+ 135 000a FFF7FEFF 		bl	Wire1_Write
+ 136              	.LVL13:
+ 118:thermometer.c ****     /* Minimum time 1us, to initiate delay */
+ 119:thermometer.c ****     CyDelayUs(READ_INIT_DLY); 
+ 137              		.loc 1 119 0
+ 138 000e 0520     		movs	r0, #5
+ 139 0010 FFF7FEFF 		bl	CyDelayUs
+ 140              	.LVL14:
+ 120:thermometer.c ****     Wire1_Write(1);
+ 141              		.loc 1 120 0
+ 142 0014 0120     		movs	r0, #1
+ 143 0016 FFF7FEFF 		bl	Wire1_Write
+ 144              	.LVL15:
+ 121:thermometer.c ****     /* Data valid before 15us, should be sampled before that*/
+ 122:thermometer.c ****     CyDelayUs(READ_VALID_DLY); 
+ 145              		.loc 1 122 0
+ 146 001a 0520     		movs	r0, #5
+ 147 001c FFF7FEFF 		bl	CyDelayUs
+ 148              	.LVL16:
+ 123:thermometer.c ****     return(Wire1_Read());
+ 149              		.loc 1 123 0
+ 150 0020 FFF7FEFF 		bl	Wire1_Read
+ 151              	.LVL17:
+ 124:thermometer.c **** }
+ 152              		.loc 1 124 0
+ 153              		@ sp needed
+ 154 0024 10BD     		pop	{r4, pc}
+ 155              		.cfi_endproc
+ 156              	.LFE38:
+ 157              		.size	Read_bit_1_wire, .-Read_bit_1_wire
+ 158 0026 C046     		.section	.text.Write8_1_wire,"ax",%progbits
+ 159              		.align	2
+ 160              		.global	Write8_1_wire
+ 161              		.code	16
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 6
+
+
+ 162              		.thumb_func
+ 163              		.type	Write8_1_wire, %function
+ 164              	Write8_1_wire:
+ 165              	.LFB39:
+ 125:thermometer.c **** 
+ 126:thermometer.c **** /*******************************************************************************
+ 127:thermometer.c ****     * Function Name: Write8_1_wire
+ 128:thermometer.c ****     ****************************************************************************//**
+ 129:thermometer.c ****     *
+ 130:thermometer.c ****     * \Master Writes one byte of data to slave
+ 131:thermometer.c ****     * 
+ 132:thermometer.c ****     * <b>Note</b> Write 1 byte of data using bit write function 
+ 133:thermometer.c ****     * 
+ 134:thermometer.c ****     *
+ 135:thermometer.c ****     * \param mode
+ 136:thermometer.c ****     * Write data
+ 137:thermometer.c ****     *
+ 138:thermometer.c ****     * \return
+ 139:thermometer.c ****     *  void function
+ 140:thermometer.c ****     *
+ 141:thermometer.c **** *********************************************************************************************/
+ 142:thermometer.c **** void Write8_1_wire(uint8 payload) 
+ 143:thermometer.c ****     {
+ 166              		.loc 1 143 0
+ 167              		.cfi_startproc
+ 168              		@ args = 0, pretend = 0, frame = 0
+ 169              		@ frame_needed = 0, uses_anonymous_args = 0
+ 170              	.LVL18:
+ 171 0000 70B5     		push	{r4, r5, r6, lr}
+ 172              		.cfi_def_cfa_offset 16
+ 173              		.cfi_offset 4, -16
+ 174              		.cfi_offset 5, -12
+ 175              		.cfi_offset 6, -8
+ 176              		.cfi_offset 14, -4
+ 177 0002 0500     		movs	r5, r0
+ 178              	.LVL19:
+ 144:thermometer.c **** 	    uint8 BitPayload,  shiftcount;
+ 145:thermometer.c **** 	    for (shiftcount=0; shiftcount<=7;shiftcount++) 
+ 179              		.loc 1 145 0
+ 180 0004 0024     		movs	r4, #0
+ 181 0006 07E0     		b	.L7
+ 182              	.LVL20:
+ 183              	.L8:
+ 146:thermometer.c ****         {
+ 147:thermometer.c ****             BitPayload = (payload >> shiftcount) & 0x01;
+ 184              		.loc 1 147 0 discriminator 3
+ 185 0008 2B00     		movs	r3, r5
+ 186 000a 2341     		asrs	r3, r3, r4
+ 187 000c 0120     		movs	r0, #1
+ 188 000e 1840     		ands	r0, r3
+ 189              	.LVL21:
+ 148:thermometer.c ****             Write_bit_1_wire(BitPayload);
+ 190              		.loc 1 148 0 discriminator 3
+ 191 0010 FFF7FEFF 		bl	Write_bit_1_wire
+ 192              	.LVL22:
+ 145:thermometer.c ****         {
+ 193              		.loc 1 145 0 discriminator 3
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 7
+
+
+ 194 0014 0134     		adds	r4, r4, #1
+ 195              	.LVL23:
+ 196 0016 E4B2     		uxtb	r4, r4
+ 197              	.LVL24:
+ 198              	.L7:
+ 145:thermometer.c ****         {
+ 199              		.loc 1 145 0 is_stmt 0 discriminator 1
+ 200 0018 072C     		cmp	r4, #7
+ 201 001a F5D9     		bls	.L8
+ 149:thermometer.c ****         }
+ 150:thermometer.c ****     }  
+ 202              		.loc 1 150 0 is_stmt 1
+ 203              		@ sp needed
+ 204              	.LVL25:
+ 205 001c 70BD     		pop	{r4, r5, r6, pc}
+ 206              		.cfi_endproc
+ 207              	.LFE39:
+ 208              		.size	Write8_1_wire, .-Write8_1_wire
+ 209 001e C046     		.section	.text.Read8_1_wire,"ax",%progbits
+ 210              		.align	2
+ 211              		.global	Read8_1_wire
+ 212              		.code	16
+ 213              		.thumb_func
+ 214              		.type	Read8_1_wire, %function
+ 215              	Read8_1_wire:
+ 216              	.LFB40:
+ 151:thermometer.c **** 
+ 152:thermometer.c **** /*******************************************************************************
+ 153:thermometer.c ****     * Function Name: Read8_1_wire
+ 154:thermometer.c ****     ****************************************************************************//**
+ 155:thermometer.c ****     *
+ 156:thermometer.c ****     * \Master Reads one byte data from slave
+ 157:thermometer.c ****     * 
+ 158:thermometer.c ****     * <b>Note</b> Reads 1 byte of data using bit read function 
+ 159:thermometer.c ****     * 
+ 160:thermometer.c ****     *
+ 161:thermometer.c ****     * \param mode
+ 162:thermometer.c ****     * no parameter
+ 163:thermometer.c ****     *
+ 164:thermometer.c ****     * \return
+ 165:thermometer.c ****     *  1 byte read data
+ 166:thermometer.c ****     *
+ 167:thermometer.c **** *********************************************************************************************/
+ 168:thermometer.c **** uint8 Read8_1_wire() //Read 8 bits "clocked" out by the slave. 
+ 169:thermometer.c **** {
+ 217              		.loc 1 169 0
+ 218              		.cfi_startproc
+ 219              		@ args = 0, pretend = 0, frame = 0
+ 220              		@ frame_needed = 0, uses_anonymous_args = 0
+ 221 0000 70B5     		push	{r4, r5, r6, lr}
+ 222              		.cfi_def_cfa_offset 16
+ 223              		.cfi_offset 4, -16
+ 224              		.cfi_offset 5, -12
+ 225              		.cfi_offset 6, -8
+ 226              		.cfi_offset 14, -4
+ 227              	.LVL26:
+ 170:thermometer.c **** 	uint8 IncomingByte=0, shiftcount=0 ;
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 8
+
+
+ 171:thermometer.c **** 	for (shiftcount=0; shiftcount<=7; shiftcount++) 
+ 228              		.loc 1 171 0
+ 229 0002 0024     		movs	r4, #0
+ 170:thermometer.c **** 	uint8 IncomingByte=0, shiftcount=0 ;
+ 230              		.loc 1 170 0
+ 231 0004 0025     		movs	r5, #0
+ 232              		.loc 1 171 0
+ 233 0006 06E0     		b	.L10
+ 234              	.LVL27:
+ 235              	.L11:
+ 172:thermometer.c ****     {
+ 173:thermometer.c ****        IncomingByte |= (Read_bit_1_wire())<<shiftcount;
+ 236              		.loc 1 173 0 discriminator 3
+ 237 0008 FFF7FEFF 		bl	Read_bit_1_wire
+ 238              	.LVL28:
+ 239 000c A040     		lsls	r0, r0, r4
+ 240 000e 0543     		orrs	r5, r0
+ 241              	.LVL29:
+ 242 0010 EDB2     		uxtb	r5, r5
+ 243              	.LVL30:
+ 171:thermometer.c ****     {
+ 244              		.loc 1 171 0 discriminator 3
+ 245 0012 0134     		adds	r4, r4, #1
+ 246              	.LVL31:
+ 247 0014 E4B2     		uxtb	r4, r4
+ 248              	.LVL32:
+ 249              	.L10:
+ 171:thermometer.c ****     {
+ 250              		.loc 1 171 0 is_stmt 0 discriminator 1
+ 251 0016 072C     		cmp	r4, #7
+ 252 0018 F6D9     		bls	.L11
+ 174:thermometer.c ****     }
+ 175:thermometer.c ****     return(IncomingByte);
+ 176:thermometer.c **** }
+ 253              		.loc 1 176 0 is_stmt 1
+ 254 001a 2800     		movs	r0, r5
+ 255              		@ sp needed
+ 256              	.LVL33:
+ 257              	.LVL34:
+ 258 001c 70BD     		pop	{r4, r5, r6, pc}
+ 259              		.cfi_endproc
+ 260              	.LFE40:
+ 261              		.size	Read8_1_wire, .-Read8_1_wire
+ 262              		.global	__aeabi_fadd
+ 263              		.global	__aeabi_i2f
+ 264              		.global	__aeabi_fsub
+ 265 001e C046     		.section	.text.measure_celsius,"ax",%progbits
+ 266              		.align	2
+ 267              		.global	measure_celsius
+ 268              		.code	16
+ 269              		.thumb_func
+ 270              		.type	measure_celsius, %function
+ 271              	measure_celsius:
+ 272              	.LFB41:
+ 177:thermometer.c **** 
+ 178:thermometer.c **** /*******************************************************************************
+ 179:thermometer.c ****     * Function Name:  measure_celsius
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 9
+
+
+ 180:thermometer.c ****     ****************************************************************************//**
+ 181:thermometer.c ****     *
+ 182:thermometer.c ****     * \Converts the 12 bit sensor data to celcius
+ 183:thermometer.c ****     * 
+ 184:thermometer.c ****     * <b>Note</b>  
+ 185:thermometer.c ****     * Converts 2 byte sensor scratch pad data into accurate float data. 
+ 186:thermometer.c ****     *
+ 187:thermometer.c ****     * \param mode
+ 188:thermometer.c ****     * 2 byte sensor data
+ 189:thermometer.c ****     *
+ 190:thermometer.c ****     * \return
+ 191:thermometer.c ****     *  temperature value in celcius float format
+ 192:thermometer.c ****     *
+ 193:thermometer.c **** *********************************************************************************************/
+ 194:thermometer.c **** float measure_celsius(uint16 temp)
+ 195:thermometer.c **** {
+ 273              		.loc 1 195 0
+ 274              		.cfi_startproc
+ 275              		@ args = 0, pretend = 0, frame = 0
+ 276              		@ frame_needed = 0, uses_anonymous_args = 0
+ 277              	.LVL35:
+ 278 0000 70B5     		push	{r4, r5, r6, lr}
+ 279              		.cfi_def_cfa_offset 16
+ 280              		.cfi_offset 4, -16
+ 281              		.cfi_offset 5, -12
+ 282              		.cfi_offset 6, -8
+ 283              		.cfi_offset 14, -4
+ 284 0002 0400     		movs	r4, r0
+ 285              	.LVL36:
+ 196:thermometer.c ****     
+ 197:thermometer.c **** float temp_c = 0;	
+ 198:thermometer.c ****     
+ 199:thermometer.c **** if (temp >= 0x800) //temperture is negative 
+ 286              		.loc 1 199 0
+ 287 0004 254B     		ldr	r3, .L23
+ 288 0006 9842     		cmp	r0, r3
+ 289 0008 2AD9     		bls	.L13
+ 200:thermometer.c **** {	
+ 201:thermometer.c **** 
+ 202:thermometer.c **** //calculate the fractional part 
+ 203:thermometer.c **** if(temp & 0x0001) temp_c += 0.06250; 
+ 290              		.loc 1 203 0
+ 291 000a C307     		lsls	r3, r0, #31
+ 292 000c 01D4     		bmi	.L22
+ 197:thermometer.c ****     
+ 293              		.loc 1 197 0
+ 294 000e 0025     		movs	r5, #0
+ 295 0010 01E0     		b	.L14
+ 296              	.L22:
+ 297              		.loc 1 203 0
+ 298 0012 F625     		movs	r5, #246
+ 299 0014 AD05     		lsls	r5, r5, #22
+ 300              	.L14:
+ 301              	.LVL37:
+ 204:thermometer.c **** if(temp & 0x0002) temp_c += 0.12500; 
+ 302              		.loc 1 204 0
+ 303 0016 A307     		lsls	r3, r4, #30
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 10
+
+
+ 304 0018 05D5     		bpl	.L15
+ 305              		.loc 1 204 0 is_stmt 0 discriminator 1
+ 306 001a F821     		movs	r1, #248
+ 307 001c 8905     		lsls	r1, r1, #22
+ 308 001e 281C     		adds	r0, r5, #0
+ 309              	.LVL38:
+ 310 0020 FFF7FEFF 		bl	__aeabi_fadd
+ 311              	.LVL39:
+ 312 0024 051C     		adds	r5, r0, #0
+ 313              	.LVL40:
+ 314              	.L15:
+ 205:thermometer.c **** if(temp & 0x0004) temp_c += 0.25000; 
+ 315              		.loc 1 205 0 is_stmt 1
+ 316 0026 6307     		lsls	r3, r4, #29
+ 317 0028 05D5     		bpl	.L16
+ 318              		.loc 1 205 0 is_stmt 0 discriminator 1
+ 319 002a FA21     		movs	r1, #250
+ 320 002c 8905     		lsls	r1, r1, #22
+ 321 002e 281C     		adds	r0, r5, #0
+ 322 0030 FFF7FEFF 		bl	__aeabi_fadd
+ 323              	.LVL41:
+ 324 0034 051C     		adds	r5, r0, #0
+ 325              	.LVL42:
+ 326              	.L16:
+ 206:thermometer.c **** if(temp & 0x0008) temp_c += 0.50000; 
+ 327              		.loc 1 206 0 is_stmt 1
+ 328 0036 2307     		lsls	r3, r4, #28
+ 329 0038 05D5     		bpl	.L17
+ 330              		.loc 1 206 0 is_stmt 0 discriminator 1
+ 331 003a FC21     		movs	r1, #252
+ 332 003c 8905     		lsls	r1, r1, #22
+ 333 003e 281C     		adds	r0, r5, #0
+ 334 0040 FFF7FEFF 		bl	__aeabi_fadd
+ 335              	.LVL43:
+ 336 0044 051C     		adds	r5, r0, #0
+ 337              	.LVL44:
+ 338              	.L17:
+ 207:thermometer.c **** 
+ 208:thermometer.c **** //calculate the whole number part 
+ 209:thermometer.c **** temp = (temp >> 4) & 0x00FF; 
+ 339              		.loc 1 209 0 is_stmt 1
+ 340 0046 2409     		lsrs	r4, r4, #4
+ 341 0048 FF20     		movs	r0, #255
+ 342 004a 0440     		ands	r4, r0
+ 343              	.LVL45:
+ 210:thermometer.c **** temp = temp - 0x0001; //subtract 1 
+ 344              		.loc 1 210 0
+ 345 004c 013C     		subs	r4, r4, #1
+ 346              	.LVL46:
+ 347 004e A4B2     		uxth	r4, r4
+ 348              	.LVL47:
+ 211:thermometer.c **** temp = ~temp; //ones compliment 
+ 212:thermometer.c **** temp_c = temp_c - (float)(temp & 0xFF); 
+ 349              		.loc 1 212 0
+ 350 0050 A043     		bics	r0, r4
+ 351 0052 FFF7FEFF 		bl	__aeabi_i2f
+ 352              	.LVL48:
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 11
+
+
+ 353 0056 011C     		adds	r1, r0, #0
+ 354 0058 281C     		adds	r0, r5, #0
+ 355 005a FFF7FEFF 		bl	__aeabi_fsub
+ 356              	.LVL49:
+ 357 005e 1CE0     		b	.L18
+ 358              	.LVL50:
+ 359              	.L13:
+ 213:thermometer.c **** } 
+ 214:thermometer.c **** else //temperture is positive 
+ 215:thermometer.c **** { 
+ 216:thermometer.c **** temp_c = 0; 
+ 217:thermometer.c **** //calculate the whole number part 
+ 218:thermometer.c **** temp_c = (temp >> 4) & 0x00FF; 
+ 360              		.loc 1 218 0
+ 361 0060 0309     		lsrs	r3, r0, #4
+ 362 0062 FF20     		movs	r0, #255
+ 363              	.LVL51:
+ 364 0064 1840     		ands	r0, r3
+ 365 0066 FFF7FEFF 		bl	__aeabi_i2f
+ 366              	.LVL52:
+ 219:thermometer.c **** //calculate the fractional part 
+ 220:thermometer.c **** if(temp & 0x0001) temp_c = temp_c + 0.06250; 
+ 367              		.loc 1 220 0
+ 368 006a E307     		lsls	r3, r4, #31
+ 369 006c 03D5     		bpl	.L19
+ 370              		.loc 1 220 0 is_stmt 0 discriminator 1
+ 371 006e F621     		movs	r1, #246
+ 372 0070 8905     		lsls	r1, r1, #22
+ 373 0072 FFF7FEFF 		bl	__aeabi_fadd
+ 374              	.LVL53:
+ 375              	.L19:
+ 221:thermometer.c **** if(temp & 0x0002) temp_c = temp_c + 0.12500; 
+ 376              		.loc 1 221 0 is_stmt 1
+ 377 0076 A307     		lsls	r3, r4, #30
+ 378 0078 03D5     		bpl	.L20
+ 379              		.loc 1 221 0 is_stmt 0 discriminator 1
+ 380 007a F821     		movs	r1, #248
+ 381 007c 8905     		lsls	r1, r1, #22
+ 382 007e FFF7FEFF 		bl	__aeabi_fadd
+ 383              	.LVL54:
+ 384              	.L20:
+ 222:thermometer.c **** if(temp & 0x0004) temp_c = temp_c + 0.25000; 
+ 385              		.loc 1 222 0 is_stmt 1
+ 386 0082 6307     		lsls	r3, r4, #29
+ 387 0084 03D5     		bpl	.L21
+ 388              		.loc 1 222 0 is_stmt 0 discriminator 1
+ 389 0086 FA21     		movs	r1, #250
+ 390 0088 8905     		lsls	r1, r1, #22
+ 391 008a FFF7FEFF 		bl	__aeabi_fadd
+ 392              	.LVL55:
+ 393              	.L21:
+ 223:thermometer.c **** if(temp & 0x0008) temp_c = temp_c + 0.50000; 
+ 394              		.loc 1 223 0 is_stmt 1
+ 395 008e 2307     		lsls	r3, r4, #28
+ 396 0090 03D5     		bpl	.L18
+ 397              		.loc 1 223 0 is_stmt 0 discriminator 1
+ 398 0092 FC21     		movs	r1, #252
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 12
+
+
+ 399 0094 8905     		lsls	r1, r1, #22
+ 400 0096 FFF7FEFF 		bl	__aeabi_fadd
+ 401              	.LVL56:
+ 402              	.L18:
+ 224:thermometer.c **** }
+ 225:thermometer.c **** return temp_c;
+ 226:thermometer.c **** }
+ 403              		.loc 1 226 0 is_stmt 1
+ 404              		@ sp needed
+ 405 009a 70BD     		pop	{r4, r5, r6, pc}
+ 406              	.L24:
+ 407              		.align	2
+ 408              	.L23:
+ 409 009c FF070000 		.word	2047
+ 410              		.cfi_endproc
+ 411              	.LFE41:
+ 412              		.size	measure_celsius, .-measure_celsius
+ 413              		.section	.text.read_temp,"ax",%progbits
+ 414              		.align	2
+ 415              		.global	read_temp
+ 416              		.code	16
+ 417              		.thumb_func
+ 418              		.type	read_temp, %function
+ 419              	read_temp:
+ 420              	.LFB42:
+ 227:thermometer.c **** 
+ 228:thermometer.c **** float read_temp() {
+ 421              		.loc 1 228 0
+ 422              		.cfi_startproc
+ 423              		@ args = 0, pretend = 0, frame = 16
+ 424              		@ frame_needed = 0, uses_anonymous_args = 0
+ 425 0000 10B5     		push	{r4, lr}
+ 426              		.cfi_def_cfa_offset 8
+ 427              		.cfi_offset 4, -8
+ 428              		.cfi_offset 14, -4
+ 429 0002 84B0     		sub	sp, sp, #16
+ 430              		.cfi_def_cfa_offset 24
+ 229:thermometer.c ****     uint8 scratchpad[9];
+ 230:thermometer.c ****     uint16 tempr;
+ 231:thermometer.c ****     float temp_cel;
+ 232:thermometer.c ****     
+ 233:thermometer.c ****     Initialize_1_wire();
+ 431              		.loc 1 233 0
+ 432 0004 FFF7FEFF 		bl	Initialize_1_wire
+ 433              	.LVL57:
+ 234:thermometer.c **** 
+ 235:thermometer.c ****     CyDelay(SETUP_DLY);
+ 434              		.loc 1 235 0
+ 435 0008 FA20     		movs	r0, #250
+ 436 000a 8000     		lsls	r0, r0, #2
+ 437 000c FFF7FEFF 		bl	CyDelay
+ 438              	.LVL58:
+ 236:thermometer.c **** 
+ 237:thermometer.c ****     /*Skip address check command */
+ 238:thermometer.c ****      Write8_1_wire(SKIP_ADDR_CMND); 
+ 439              		.loc 1 238 0
+ 440 0010 CC20     		movs	r0, #204
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 13
+
+
+ 441 0012 FFF7FEFF 		bl	Write8_1_wire
+ 442              	.LVL59:
+ 239:thermometer.c ****     /* Start Convert*/
+ 240:thermometer.c ****     Write8_1_wire(START_CONVERT);
+ 443              		.loc 1 240 0
+ 444 0016 4420     		movs	r0, #68
+ 445 0018 FFF7FEFF 		bl	Write8_1_wire
+ 446              	.LVL60:
+ 447              	.L26:
+ 241:thermometer.c ****     
+ 242:thermometer.c ****     /* Wait until conversion completes */
+ 243:thermometer.c ****     while(Read_bit_1_wire()==0);
+ 448              		.loc 1 243 0 discriminator 1
+ 449 001c FFF7FEFF 		bl	Read_bit_1_wire
+ 450              	.LVL61:
+ 451 0020 0028     		cmp	r0, #0
+ 452 0022 FBD0     		beq	.L26
+ 244:thermometer.c ****     
+ 245:thermometer.c ****     Initialize_1_wire();
+ 453              		.loc 1 245 0
+ 454 0024 FFF7FEFF 		bl	Initialize_1_wire
+ 455              	.LVL62:
+ 246:thermometer.c **** 
+ 247:thermometer.c ****     CyDelay(SETUP_DLY);
+ 456              		.loc 1 247 0
+ 457 0028 FA20     		movs	r0, #250
+ 458 002a 8000     		lsls	r0, r0, #2
+ 459 002c FFF7FEFF 		bl	CyDelay
+ 460              	.LVL63:
+ 248:thermometer.c **** 
+ 249:thermometer.c ****     /*Skip address check command */
+ 250:thermometer.c ****     Write8_1_wire(SKIP_ADDR_CMND);
+ 461              		.loc 1 250 0
+ 462 0030 CC20     		movs	r0, #204
+ 463 0032 FFF7FEFF 		bl	Write8_1_wire
+ 464              	.LVL64:
+ 251:thermometer.c ****     /*Read Scratch Pad command*/
+ 252:thermometer.c ****     Write8_1_wire(READ_SC_PAD);
+ 465              		.loc 1 252 0
+ 466 0036 BE20     		movs	r0, #190
+ 467 0038 FFF7FEFF 		bl	Write8_1_wire
+ 468              	.LVL65:
+ 469              	.LBB2:
+ 253:thermometer.c ****     
+ 254:thermometer.c ****     /*Copy the scratpad from slave*/
+ 255:thermometer.c ****     for(int i=0;i<9;i++)
+ 470              		.loc 1 255 0
+ 471 003c 0024     		movs	r4, #0
+ 472 003e 04E0     		b	.L27
+ 473              	.LVL66:
+ 474              	.L28:
+ 256:thermometer.c ****     {
+ 257:thermometer.c ****         scratchpad[i]=Read8_1_wire();
+ 475              		.loc 1 257 0 discriminator 3
+ 476 0040 FFF7FEFF 		bl	Read8_1_wire
+ 477              	.LVL67:
+ 478 0044 01AB     		add	r3, sp, #4
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 14
+
+
+ 479 0046 1855     		strb	r0, [r3, r4]
+ 255:thermometer.c ****     {
+ 480              		.loc 1 255 0 discriminator 3
+ 481 0048 0134     		adds	r4, r4, #1
+ 482              	.LVL68:
+ 483              	.L27:
+ 255:thermometer.c ****     {
+ 484              		.loc 1 255 0 is_stmt 0 discriminator 1
+ 485 004a 082C     		cmp	r4, #8
+ 486 004c F8DD     		ble	.L28
+ 487              	.LBE2:
+ 258:thermometer.c ****     }
+ 259:thermometer.c ****     
+ 260:thermometer.c ****     
+ 261:thermometer.c ****     /* Combine the result to 16 bit register */
+ 262:thermometer.c ****     tempr=(scratchpad[1]<<8)+scratchpad[0];
+ 488              		.loc 1 262 0 is_stmt 1
+ 489 004e 01AB     		add	r3, sp, #4
+ 490 0050 5878     		ldrb	r0, [r3, #1]
+ 491 0052 1B78     		ldrb	r3, [r3]
+ 492 0054 0002     		lsls	r0, r0, #8
+ 493 0056 C018     		adds	r0, r0, r3
+ 494 0058 80B2     		uxth	r0, r0
+ 495              	.LVL69:
+ 263:thermometer.c **** 
+ 264:thermometer.c ****     temp_cel= measure_celsius(tempr);
+ 496              		.loc 1 264 0
+ 497 005a FFF7FEFF 		bl	measure_celsius
+ 498              	.LVL70:
+ 265:thermometer.c ****     
+ 266:thermometer.c ****     return temp_cel;
+ 267:thermometer.c **** }
+ 499              		.loc 1 267 0
+ 500 005e 04B0     		add	sp, sp, #16
+ 501              		@ sp needed
+ 502              	.LVL71:
+ 503 0060 10BD     		pop	{r4, pc}
+ 504              		.cfi_endproc
+ 505              	.LFE42:
+ 506              		.size	read_temp, .-read_temp
+ 507 0062 C046     		.text
+ 508              	.Letext0:
+ 509              		.file 2 "Generated_Source\\PSoC4/cytypes.h"
+ 510              		.file 3 "Generated_Source\\PSoC4/Wire1.h"
+ 511              		.file 4 "Generated_Source\\PSoC4/CyLib.h"
+ 512              		.section	.debug_info,"",%progbits
+ 513              	.Ldebug_info0:
+ 514 0000 37040000 		.4byte	0x437
+ 515 0004 0400     		.2byte	0x4
+ 516 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 517 000a 04       		.byte	0x4
+ 518 000b 01       		.uleb128 0x1
+ 519 000c 97000000 		.4byte	.LASF37
+ 520 0010 0C       		.byte	0xc
+ 521 0011 95010000 		.4byte	.LASF38
+ 522 0015 24000000 		.4byte	.LASF39
+ 523 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 15
+
+
+ 524 001d 00000000 		.4byte	0
+ 525 0021 00000000 		.4byte	.Ldebug_line0
+ 526 0025 02       		.uleb128 0x2
+ 527 0026 01       		.byte	0x1
+ 528 0027 06       		.byte	0x6
+ 529 0028 73020000 		.4byte	.LASF0
+ 530 002c 02       		.uleb128 0x2
+ 531 002d 01       		.byte	0x1
+ 532 002e 08       		.byte	0x8
+ 533 002f 48010000 		.4byte	.LASF1
+ 534 0033 02       		.uleb128 0x2
+ 535 0034 02       		.byte	0x2
+ 536 0035 05       		.byte	0x5
+ 537 0036 30020000 		.4byte	.LASF2
+ 538 003a 02       		.uleb128 0x2
+ 539 003b 02       		.byte	0x2
+ 540 003c 07       		.byte	0x7
+ 541 003d 11000000 		.4byte	.LASF3
+ 542 0041 02       		.uleb128 0x2
+ 543 0042 04       		.byte	0x4
+ 544 0043 05       		.byte	0x5
+ 545 0044 55020000 		.4byte	.LASF4
+ 546 0048 02       		.uleb128 0x2
+ 547 0049 04       		.byte	0x4
+ 548 004a 07       		.byte	0x7
+ 549 004b 5D010000 		.4byte	.LASF5
+ 550 004f 02       		.uleb128 0x2
+ 551 0050 08       		.byte	0x8
+ 552 0051 05       		.byte	0x5
+ 553 0052 17020000 		.4byte	.LASF6
+ 554 0056 02       		.uleb128 0x2
+ 555 0057 08       		.byte	0x8
+ 556 0058 07       		.byte	0x7
+ 557 0059 31010000 		.4byte	.LASF7
+ 558 005d 03       		.uleb128 0x3
+ 559 005e 04       		.byte	0x4
+ 560 005f 05       		.byte	0x5
+ 561 0060 696E7400 		.ascii	"int\000"
+ 562 0064 02       		.uleb128 0x2
+ 563 0065 04       		.byte	0x4
+ 564 0066 07       		.byte	0x7
+ 565 0067 D9010000 		.4byte	.LASF8
+ 566 006b 04       		.uleb128 0x4
+ 567 006c 74010000 		.4byte	.LASF9
+ 568 0070 02       		.byte	0x2
+ 569 0071 E401     		.2byte	0x1e4
+ 570 0073 2C000000 		.4byte	0x2c
+ 571 0077 04       		.uleb128 0x4
+ 572 0078 8E010000 		.4byte	.LASF10
+ 573 007c 02       		.byte	0x2
+ 574 007d E501     		.2byte	0x1e5
+ 575 007f 3A000000 		.4byte	0x3a
+ 576 0083 02       		.uleb128 0x2
+ 577 0084 04       		.byte	0x4
+ 578 0085 04       		.byte	0x4
+ 579 0086 25010000 		.4byte	.LASF11
+ 580 008a 02       		.uleb128 0x2
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 16
+
+
+ 581 008b 08       		.byte	0x8
+ 582 008c 04       		.byte	0x4
+ 583 008d 87010000 		.4byte	.LASF12
+ 584 0091 02       		.uleb128 0x2
+ 585 0092 01       		.byte	0x1
+ 586 0093 08       		.byte	0x8
+ 587 0094 F1010000 		.4byte	.LASF13
+ 588 0098 02       		.uleb128 0x2
+ 589 0099 08       		.byte	0x8
+ 590 009a 04       		.byte	0x4
+ 591 009b 67020000 		.4byte	.LASF14
+ 592 009f 02       		.uleb128 0x2
+ 593 00a0 04       		.byte	0x4
+ 594 00a1 07       		.byte	0x7
+ 595 00a2 0E020000 		.4byte	.LASF15
+ 596 00a6 05       		.uleb128 0x5
+ 597 00a7 7E000000 		.4byte	.LASF16
+ 598 00ab 01       		.byte	0x1
+ 599 00ac 2E       		.byte	0x2e
+ 600 00ad 6B000000 		.4byte	0x6b
+ 601 00b1 00000000 		.4byte	.LFB36
+ 602 00b5 22000000 		.4byte	.LFE36-.LFB36
+ 603 00b9 01       		.uleb128 0x1
+ 604 00ba 9C       		.byte	0x9c
+ 605 00bb 24010000 		.4byte	0x124
+ 606 00bf 06       		.uleb128 0x6
+ 607 00c0 90000000 		.4byte	.LASF22
+ 608 00c4 01       		.byte	0x1
+ 609 00c5 30       		.byte	0x30
+ 610 00c6 6B000000 		.4byte	0x6b
+ 611 00ca 01       		.uleb128 0x1
+ 612 00cb 50       		.byte	0x50
+ 613 00cc 07       		.uleb128 0x7
+ 614 00cd 08000000 		.4byte	.LVL0
+ 615 00d1 0E040000 		.4byte	0x40e
+ 616 00d5 DF000000 		.4byte	0xdf
+ 617 00d9 08       		.uleb128 0x8
+ 618 00da 01       		.uleb128 0x1
+ 619 00db 50       		.byte	0x50
+ 620 00dc 01       		.uleb128 0x1
+ 621 00dd 30       		.byte	0x30
+ 622 00de 00       		.byte	0
+ 623 00df 07       		.uleb128 0x7
+ 624 00e0 10000000 		.4byte	.LVL1
+ 625 00e4 19040000 		.4byte	0x419
+ 626 00e8 F4000000 		.4byte	0xf4
+ 627 00ec 08       		.uleb128 0x8
+ 628 00ed 01       		.uleb128 0x1
+ 629 00ee 50       		.byte	0x50
+ 630 00ef 03       		.uleb128 0x3
+ 631 00f0 0A       		.byte	0xa
+ 632 00f1 E001     		.2byte	0x1e0
+ 633 00f3 00       		.byte	0
+ 634 00f4 07       		.uleb128 0x7
+ 635 00f5 16000000 		.4byte	.LVL2
+ 636 00f9 0E040000 		.4byte	0x40e
+ 637 00fd 07010000 		.4byte	0x107
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 17
+
+
+ 638 0101 08       		.uleb128 0x8
+ 639 0102 01       		.uleb128 0x1
+ 640 0103 50       		.byte	0x50
+ 641 0104 01       		.uleb128 0x1
+ 642 0105 31       		.byte	0x31
+ 643 0106 00       		.byte	0
+ 644 0107 07       		.uleb128 0x7
+ 645 0108 1C000000 		.4byte	.LVL3
+ 646 010c 19040000 		.4byte	0x419
+ 647 0110 1A010000 		.4byte	0x11a
+ 648 0114 08       		.uleb128 0x8
+ 649 0115 01       		.uleb128 0x1
+ 650 0116 50       		.byte	0x50
+ 651 0117 01       		.uleb128 0x1
+ 652 0118 4E       		.byte	0x4e
+ 653 0119 00       		.byte	0
+ 654 011a 09       		.uleb128 0x9
+ 655 011b 20000000 		.4byte	.LVL4
+ 656 011f 24040000 		.4byte	0x424
+ 657 0123 00       		.byte	0
+ 658 0124 0A       		.uleb128 0xa
+ 659 0125 A3010000 		.4byte	.LASF17
+ 660 0129 01       		.byte	0x1
+ 661 012a 4C       		.byte	0x4c
+ 662 012b 00000000 		.4byte	.LFB37
+ 663 012f 2A000000 		.4byte	.LFE37-.LFB37
+ 664 0133 01       		.uleb128 0x1
+ 665 0134 9C       		.byte	0x9c
+ 666 0135 A5010000 		.4byte	0x1a5
+ 667 0139 0B       		.uleb128 0xb
+ 668 013a 0B000000 		.4byte	.LASF20
+ 669 013e 01       		.byte	0x1
+ 670 013f 4C       		.byte	0x4c
+ 671 0140 6B000000 		.4byte	0x6b
+ 672 0144 00000000 		.4byte	.LLST0
+ 673 0148 07       		.uleb128 0x7
+ 674 0149 0A000000 		.4byte	.LVL7
+ 675 014d 19040000 		.4byte	0x419
+ 676 0151 5B010000 		.4byte	0x15b
+ 677 0155 08       		.uleb128 0x8
+ 678 0156 01       		.uleb128 0x1
+ 679 0157 50       		.byte	0x50
+ 680 0158 01       		.uleb128 0x1
+ 681 0159 44       		.byte	0x44
+ 682 015a 00       		.byte	0
+ 683 015b 07       		.uleb128 0x7
+ 684 015c 10000000 		.4byte	.LVL8
+ 685 0160 0E040000 		.4byte	0x40e
+ 686 0164 6E010000 		.4byte	0x16e
+ 687 0168 08       		.uleb128 0x8
+ 688 0169 01       		.uleb128 0x1
+ 689 016a 50       		.byte	0x50
+ 690 016b 01       		.uleb128 0x1
+ 691 016c 30       		.byte	0x30
+ 692 016d 00       		.byte	0
+ 693 016e 07       		.uleb128 0x7
+ 694 016f 1A000000 		.4byte	.LVL9
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 18
+
+
+ 695 0173 19040000 		.4byte	0x419
+ 696 0177 82010000 		.4byte	0x182
+ 697 017b 08       		.uleb128 0x8
+ 698 017c 01       		.uleb128 0x1
+ 699 017d 50       		.byte	0x50
+ 700 017e 02       		.uleb128 0x2
+ 701 017f 08       		.byte	0x8
+ 702 0180 3C       		.byte	0x3c
+ 703 0181 00       		.byte	0
+ 704 0182 07       		.uleb128 0x7
+ 705 0183 22000000 		.4byte	.LVL10
+ 706 0187 19040000 		.4byte	0x419
+ 707 018b 95010000 		.4byte	0x195
+ 708 018f 08       		.uleb128 0x8
+ 709 0190 01       		.uleb128 0x1
+ 710 0191 50       		.byte	0x50
+ 711 0192 01       		.uleb128 0x1
+ 712 0193 3A       		.byte	0x3a
+ 713 0194 00       		.byte	0
+ 714 0195 0C       		.uleb128 0xc
+ 715 0196 28000000 		.4byte	.LVL11
+ 716 019a 0E040000 		.4byte	0x40e
+ 717 019e 08       		.uleb128 0x8
+ 718 019f 01       		.uleb128 0x1
+ 719 01a0 50       		.byte	0x50
+ 720 01a1 01       		.uleb128 0x1
+ 721 01a2 31       		.byte	0x31
+ 722 01a3 00       		.byte	0
+ 723 01a4 00       		.byte	0
+ 724 01a5 05       		.uleb128 0x5
+ 725 01a6 FE010000 		.4byte	.LASF18
+ 726 01aa 01       		.byte	0x1
+ 727 01ab 70       		.byte	0x70
+ 728 01ac 6B000000 		.4byte	0x6b
+ 729 01b0 00000000 		.4byte	.LFB38
+ 730 01b4 26000000 		.4byte	.LFE38-.LFB38
+ 731 01b8 01       		.uleb128 0x1
+ 732 01b9 9C       		.byte	0x9c
+ 733 01ba 27020000 		.4byte	0x227
+ 734 01be 07       		.uleb128 0x7
+ 735 01bf 08000000 		.4byte	.LVL12
+ 736 01c3 19040000 		.4byte	0x419
+ 737 01c7 D1010000 		.4byte	0x1d1
+ 738 01cb 08       		.uleb128 0x8
+ 739 01cc 01       		.uleb128 0x1
+ 740 01cd 50       		.byte	0x50
+ 741 01ce 01       		.uleb128 0x1
+ 742 01cf 44       		.byte	0x44
+ 743 01d0 00       		.byte	0
+ 744 01d1 07       		.uleb128 0x7
+ 745 01d2 0E000000 		.4byte	.LVL13
+ 746 01d6 0E040000 		.4byte	0x40e
+ 747 01da E4010000 		.4byte	0x1e4
+ 748 01de 08       		.uleb128 0x8
+ 749 01df 01       		.uleb128 0x1
+ 750 01e0 50       		.byte	0x50
+ 751 01e1 01       		.uleb128 0x1
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 19
+
+
+ 752 01e2 30       		.byte	0x30
+ 753 01e3 00       		.byte	0
+ 754 01e4 07       		.uleb128 0x7
+ 755 01e5 14000000 		.4byte	.LVL14
+ 756 01e9 19040000 		.4byte	0x419
+ 757 01ed F7010000 		.4byte	0x1f7
+ 758 01f1 08       		.uleb128 0x8
+ 759 01f2 01       		.uleb128 0x1
+ 760 01f3 50       		.byte	0x50
+ 761 01f4 01       		.uleb128 0x1
+ 762 01f5 35       		.byte	0x35
+ 763 01f6 00       		.byte	0
+ 764 01f7 07       		.uleb128 0x7
+ 765 01f8 1A000000 		.4byte	.LVL15
+ 766 01fc 0E040000 		.4byte	0x40e
+ 767 0200 0A020000 		.4byte	0x20a
+ 768 0204 08       		.uleb128 0x8
+ 769 0205 01       		.uleb128 0x1
+ 770 0206 50       		.byte	0x50
+ 771 0207 01       		.uleb128 0x1
+ 772 0208 31       		.byte	0x31
+ 773 0209 00       		.byte	0
+ 774 020a 07       		.uleb128 0x7
+ 775 020b 20000000 		.4byte	.LVL16
+ 776 020f 19040000 		.4byte	0x419
+ 777 0213 1D020000 		.4byte	0x21d
+ 778 0217 08       		.uleb128 0x8
+ 779 0218 01       		.uleb128 0x1
+ 780 0219 50       		.byte	0x50
+ 781 021a 01       		.uleb128 0x1
+ 782 021b 35       		.byte	0x35
+ 783 021c 00       		.byte	0
+ 784 021d 09       		.uleb128 0x9
+ 785 021e 24000000 		.4byte	.LVL17
+ 786 0222 24040000 		.4byte	0x424
+ 787 0226 00       		.byte	0
+ 788 0227 0A       		.uleb128 0xa
+ 789 0228 47020000 		.4byte	.LASF19
+ 790 022c 01       		.byte	0x1
+ 791 022d 8E       		.byte	0x8e
+ 792 022e 00000000 		.4byte	.LFB39
+ 793 0232 1E000000 		.4byte	.LFE39-.LFB39
+ 794 0236 01       		.uleb128 0x1
+ 795 0237 9C       		.byte	0x9c
+ 796 0238 7F020000 		.4byte	0x27f
+ 797 023c 0B       		.uleb128 0xb
+ 798 023d F6010000 		.4byte	.LASF21
+ 799 0241 01       		.byte	0x1
+ 800 0242 8E       		.byte	0x8e
+ 801 0243 6B000000 		.4byte	0x6b
+ 802 0247 21000000 		.4byte	.LLST1
+ 803 024b 0D       		.uleb128 0xd
+ 804 024c 00000000 		.4byte	.LASF23
+ 805 0250 01       		.byte	0x1
+ 806 0251 90       		.byte	0x90
+ 807 0252 6B000000 		.4byte	0x6b
+ 808 0256 42000000 		.4byte	.LLST2
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 20
+
+
+ 809 025a 0D       		.uleb128 0xd
+ 810 025b 25020000 		.4byte	.LASF24
+ 811 025f 01       		.byte	0x1
+ 812 0260 90       		.byte	0x90
+ 813 0261 6B000000 		.4byte	0x6b
+ 814 0265 79000000 		.4byte	.LLST3
+ 815 0269 0C       		.uleb128 0xc
+ 816 026a 14000000 		.4byte	.LVL22
+ 817 026e 24010000 		.4byte	0x124
+ 818 0272 08       		.uleb128 0x8
+ 819 0273 01       		.uleb128 0x1
+ 820 0274 50       		.byte	0x50
+ 821 0275 07       		.uleb128 0x7
+ 822 0276 75       		.byte	0x75
+ 823 0277 00       		.sleb128 0
+ 824 0278 74       		.byte	0x74
+ 825 0279 00       		.sleb128 0
+ 826 027a 26       		.byte	0x26
+ 827 027b 31       		.byte	0x31
+ 828 027c 1A       		.byte	0x1a
+ 829 027d 00       		.byte	0
+ 830 027e 00       		.byte	0
+ 831 027f 05       		.uleb128 0x5
+ 832 0280 3A020000 		.4byte	.LASF25
+ 833 0284 01       		.byte	0x1
+ 834 0285 A8       		.byte	0xa8
+ 835 0286 6B000000 		.4byte	0x6b
+ 836 028a 00000000 		.4byte	.LFB40
+ 837 028e 1E000000 		.4byte	.LFE40-.LFB40
+ 838 0292 01       		.uleb128 0x1
+ 839 0293 9C       		.byte	0x9c
+ 840 0294 C0020000 		.4byte	0x2c0
+ 841 0298 0D       		.uleb128 0xd
+ 842 0299 7A010000 		.4byte	.LASF26
+ 843 029d 01       		.byte	0x1
+ 844 029e AA       		.byte	0xaa
+ 845 029f 6B000000 		.4byte	0x6b
+ 846 02a3 A3000000 		.4byte	.LLST4
+ 847 02a7 0D       		.uleb128 0xd
+ 848 02a8 25020000 		.4byte	.LASF24
+ 849 02ac 01       		.byte	0x1
+ 850 02ad AA       		.byte	0xaa
+ 851 02ae 6B000000 		.4byte	0x6b
+ 852 02b2 CD000000 		.4byte	.LLST5
+ 853 02b6 09       		.uleb128 0x9
+ 854 02b7 0C000000 		.4byte	.LVL28
+ 855 02bb A5010000 		.4byte	0x1a5
+ 856 02bf 00       		.byte	0
+ 857 02c0 0E       		.uleb128 0xe
+ 858 02c1 BE010000 		.4byte	.LASF40
+ 859 02c5 01       		.byte	0x1
+ 860 02c6 C2       		.byte	0xc2
+ 861 02c7 83000000 		.4byte	0x83
+ 862 02cb 00000000 		.4byte	.LFB41
+ 863 02cf A0000000 		.4byte	.LFE41-.LFB41
+ 864 02d3 01       		.uleb128 0x1
+ 865 02d4 9C       		.byte	0x9c
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 21
+
+
+ 866 02d5 F8020000 		.4byte	0x2f8
+ 867 02d9 0B       		.uleb128 0xb
+ 868 02da 6F010000 		.4byte	.LASF27
+ 869 02de 01       		.byte	0x1
+ 870 02df C2       		.byte	0xc2
+ 871 02e0 77000000 		.4byte	0x77
+ 872 02e4 F7000000 		.4byte	.LLST6
+ 873 02e8 0D       		.uleb128 0xd
+ 874 02e9 56010000 		.4byte	.LASF28
+ 875 02ed 01       		.byte	0x1
+ 876 02ee C5       		.byte	0xc5
+ 877 02ef 83000000 		.4byte	0x83
+ 878 02f3 57010000 		.4byte	.LLST7
+ 879 02f7 00       		.byte	0
+ 880 02f8 05       		.uleb128 0x5
+ 881 02f9 87020000 		.4byte	.LASF29
+ 882 02fd 01       		.byte	0x1
+ 883 02fe E4       		.byte	0xe4
+ 884 02ff 83000000 		.4byte	0x83
+ 885 0303 00000000 		.4byte	.LFB42
+ 886 0307 62000000 		.4byte	.LFE42-.LFB42
+ 887 030b 01       		.uleb128 0x1
+ 888 030c 9C       		.byte	0x9c
+ 889 030d FE030000 		.4byte	0x3fe
+ 890 0311 06       		.uleb128 0x6
+ 891 0312 E6010000 		.4byte	.LASF30
+ 892 0316 01       		.byte	0x1
+ 893 0317 E5       		.byte	0xe5
+ 894 0318 FE030000 		.4byte	0x3fe
+ 895 031c 02       		.uleb128 0x2
+ 896 031d 91       		.byte	0x91
+ 897 031e 6C       		.sleb128 -20
+ 898 031f 0D       		.uleb128 0xd
+ 899 0320 2B010000 		.4byte	.LASF31
+ 900 0324 01       		.byte	0x1
+ 901 0325 E6       		.byte	0xe6
+ 902 0326 77000000 		.4byte	0x77
+ 903 032a CC010000 		.4byte	.LLST8
+ 904 032e 06       		.uleb128 0x6
+ 905 032f 5E020000 		.4byte	.LASF32
+ 906 0333 01       		.byte	0x1
+ 907 0334 E7       		.byte	0xe7
+ 908 0335 83000000 		.4byte	0x83
+ 909 0339 01       		.uleb128 0x1
+ 910 033a 50       		.byte	0x50
+ 911 033b 0F       		.uleb128 0xf
+ 912 033c 3C000000 		.4byte	.LBB2
+ 913 0340 12000000 		.4byte	.LBE2-.LBB2
+ 914 0344 5F030000 		.4byte	0x35f
+ 915 0348 10       		.uleb128 0x10
+ 916 0349 6900     		.ascii	"i\000"
+ 917 034b 01       		.byte	0x1
+ 918 034c FF       		.byte	0xff
+ 919 034d 5D000000 		.4byte	0x5d
+ 920 0351 DF010000 		.4byte	.LLST9
+ 921 0355 09       		.uleb128 0x9
+ 922 0356 44000000 		.4byte	.LVL67
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 22
+
+
+ 923 035a 7F020000 		.4byte	0x27f
+ 924 035e 00       		.byte	0
+ 925 035f 09       		.uleb128 0x9
+ 926 0360 08000000 		.4byte	.LVL57
+ 927 0364 A6000000 		.4byte	0xa6
+ 928 0368 07       		.uleb128 0x7
+ 929 0369 10000000 		.4byte	.LVL58
+ 930 036d 2F040000 		.4byte	0x42f
+ 931 0371 7D030000 		.4byte	0x37d
+ 932 0375 08       		.uleb128 0x8
+ 933 0376 01       		.uleb128 0x1
+ 934 0377 50       		.byte	0x50
+ 935 0378 03       		.uleb128 0x3
+ 936 0379 0A       		.byte	0xa
+ 937 037a E803     		.2byte	0x3e8
+ 938 037c 00       		.byte	0
+ 939 037d 07       		.uleb128 0x7
+ 940 037e 16000000 		.4byte	.LVL59
+ 941 0382 27020000 		.4byte	0x227
+ 942 0386 91030000 		.4byte	0x391
+ 943 038a 08       		.uleb128 0x8
+ 944 038b 01       		.uleb128 0x1
+ 945 038c 50       		.byte	0x50
+ 946 038d 02       		.uleb128 0x2
+ 947 038e 09       		.byte	0x9
+ 948 038f CC       		.byte	0xcc
+ 949 0390 00       		.byte	0
+ 950 0391 07       		.uleb128 0x7
+ 951 0392 1C000000 		.4byte	.LVL60
+ 952 0396 27020000 		.4byte	0x227
+ 953 039a A5030000 		.4byte	0x3a5
+ 954 039e 08       		.uleb128 0x8
+ 955 039f 01       		.uleb128 0x1
+ 956 03a0 50       		.byte	0x50
+ 957 03a1 02       		.uleb128 0x2
+ 958 03a2 08       		.byte	0x8
+ 959 03a3 44       		.byte	0x44
+ 960 03a4 00       		.byte	0
+ 961 03a5 09       		.uleb128 0x9
+ 962 03a6 20000000 		.4byte	.LVL61
+ 963 03aa A5010000 		.4byte	0x1a5
+ 964 03ae 09       		.uleb128 0x9
+ 965 03af 28000000 		.4byte	.LVL62
+ 966 03b3 A6000000 		.4byte	0xa6
+ 967 03b7 07       		.uleb128 0x7
+ 968 03b8 30000000 		.4byte	.LVL63
+ 969 03bc 2F040000 		.4byte	0x42f
+ 970 03c0 CC030000 		.4byte	0x3cc
+ 971 03c4 08       		.uleb128 0x8
+ 972 03c5 01       		.uleb128 0x1
+ 973 03c6 50       		.byte	0x50
+ 974 03c7 03       		.uleb128 0x3
+ 975 03c8 0A       		.byte	0xa
+ 976 03c9 E803     		.2byte	0x3e8
+ 977 03cb 00       		.byte	0
+ 978 03cc 07       		.uleb128 0x7
+ 979 03cd 36000000 		.4byte	.LVL64
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 23
+
+
+ 980 03d1 27020000 		.4byte	0x227
+ 981 03d5 E0030000 		.4byte	0x3e0
+ 982 03d9 08       		.uleb128 0x8
+ 983 03da 01       		.uleb128 0x1
+ 984 03db 50       		.byte	0x50
+ 985 03dc 02       		.uleb128 0x2
+ 986 03dd 09       		.byte	0x9
+ 987 03de CC       		.byte	0xcc
+ 988 03df 00       		.byte	0
+ 989 03e0 07       		.uleb128 0x7
+ 990 03e1 3C000000 		.4byte	.LVL65
+ 991 03e5 27020000 		.4byte	0x227
+ 992 03e9 F4030000 		.4byte	0x3f4
+ 993 03ed 08       		.uleb128 0x8
+ 994 03ee 01       		.uleb128 0x1
+ 995 03ef 50       		.byte	0x50
+ 996 03f0 02       		.uleb128 0x2
+ 997 03f1 09       		.byte	0x9
+ 998 03f2 BE       		.byte	0xbe
+ 999 03f3 00       		.byte	0
+ 1000 03f4 09       		.uleb128 0x9
+ 1001 03f5 5E000000 		.4byte	.LVL70
+ 1002 03f9 C0020000 		.4byte	0x2c0
+ 1003 03fd 00       		.byte	0
+ 1004 03fe 11       		.uleb128 0x11
+ 1005 03ff 6B000000 		.4byte	0x6b
+ 1006 0403 0E040000 		.4byte	0x40e
+ 1007 0407 12       		.uleb128 0x12
+ 1008 0408 9F000000 		.4byte	0x9f
+ 1009 040c 08       		.byte	0x8
+ 1010 040d 00       		.byte	0
+ 1011 040e 13       		.uleb128 0x13
+ 1012 040f 72000000 		.4byte	.LASF33
+ 1013 0413 72000000 		.4byte	.LASF33
+ 1014 0417 03       		.byte	0x3
+ 1015 0418 33       		.byte	0x33
+ 1016 0419 13       		.uleb128 0x13
+ 1017 041a B4010000 		.4byte	.LASF34
+ 1018 041e B4010000 		.4byte	.LASF34
+ 1019 0422 04       		.byte	0x4
+ 1020 0423 DA       		.byte	0xda
+ 1021 0424 13       		.uleb128 0x13
+ 1022 0425 CE010000 		.4byte	.LASF35
+ 1023 0429 CE010000 		.4byte	.LASF35
+ 1024 042d 03       		.byte	0x3
+ 1025 042e 32       		.byte	0x32
+ 1026 042f 13       		.uleb128 0x13
+ 1027 0430 7F020000 		.4byte	.LASF36
+ 1028 0434 7F020000 		.4byte	.LASF36
+ 1029 0438 04       		.byte	0x4
+ 1030 0439 D9       		.byte	0xd9
+ 1031 043a 00       		.byte	0
+ 1032              		.section	.debug_abbrev,"",%progbits
+ 1033              	.Ldebug_abbrev0:
+ 1034 0000 01       		.uleb128 0x1
+ 1035 0001 11       		.uleb128 0x11
+ 1036 0002 01       		.byte	0x1
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 24
+
+
+ 1037 0003 25       		.uleb128 0x25
+ 1038 0004 0E       		.uleb128 0xe
+ 1039 0005 13       		.uleb128 0x13
+ 1040 0006 0B       		.uleb128 0xb
+ 1041 0007 03       		.uleb128 0x3
+ 1042 0008 0E       		.uleb128 0xe
+ 1043 0009 1B       		.uleb128 0x1b
+ 1044 000a 0E       		.uleb128 0xe
+ 1045 000b 55       		.uleb128 0x55
+ 1046 000c 17       		.uleb128 0x17
+ 1047 000d 11       		.uleb128 0x11
+ 1048 000e 01       		.uleb128 0x1
+ 1049 000f 10       		.uleb128 0x10
+ 1050 0010 17       		.uleb128 0x17
+ 1051 0011 00       		.byte	0
+ 1052 0012 00       		.byte	0
+ 1053 0013 02       		.uleb128 0x2
+ 1054 0014 24       		.uleb128 0x24
+ 1055 0015 00       		.byte	0
+ 1056 0016 0B       		.uleb128 0xb
+ 1057 0017 0B       		.uleb128 0xb
+ 1058 0018 3E       		.uleb128 0x3e
+ 1059 0019 0B       		.uleb128 0xb
+ 1060 001a 03       		.uleb128 0x3
+ 1061 001b 0E       		.uleb128 0xe
+ 1062 001c 00       		.byte	0
+ 1063 001d 00       		.byte	0
+ 1064 001e 03       		.uleb128 0x3
+ 1065 001f 24       		.uleb128 0x24
+ 1066 0020 00       		.byte	0
+ 1067 0021 0B       		.uleb128 0xb
+ 1068 0022 0B       		.uleb128 0xb
+ 1069 0023 3E       		.uleb128 0x3e
+ 1070 0024 0B       		.uleb128 0xb
+ 1071 0025 03       		.uleb128 0x3
+ 1072 0026 08       		.uleb128 0x8
+ 1073 0027 00       		.byte	0
+ 1074 0028 00       		.byte	0
+ 1075 0029 04       		.uleb128 0x4
+ 1076 002a 16       		.uleb128 0x16
+ 1077 002b 00       		.byte	0
+ 1078 002c 03       		.uleb128 0x3
+ 1079 002d 0E       		.uleb128 0xe
+ 1080 002e 3A       		.uleb128 0x3a
+ 1081 002f 0B       		.uleb128 0xb
+ 1082 0030 3B       		.uleb128 0x3b
+ 1083 0031 05       		.uleb128 0x5
+ 1084 0032 49       		.uleb128 0x49
+ 1085 0033 13       		.uleb128 0x13
+ 1086 0034 00       		.byte	0
+ 1087 0035 00       		.byte	0
+ 1088 0036 05       		.uleb128 0x5
+ 1089 0037 2E       		.uleb128 0x2e
+ 1090 0038 01       		.byte	0x1
+ 1091 0039 3F       		.uleb128 0x3f
+ 1092 003a 19       		.uleb128 0x19
+ 1093 003b 03       		.uleb128 0x3
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 25
+
+
+ 1094 003c 0E       		.uleb128 0xe
+ 1095 003d 3A       		.uleb128 0x3a
+ 1096 003e 0B       		.uleb128 0xb
+ 1097 003f 3B       		.uleb128 0x3b
+ 1098 0040 0B       		.uleb128 0xb
+ 1099 0041 49       		.uleb128 0x49
+ 1100 0042 13       		.uleb128 0x13
+ 1101 0043 11       		.uleb128 0x11
+ 1102 0044 01       		.uleb128 0x1
+ 1103 0045 12       		.uleb128 0x12
+ 1104 0046 06       		.uleb128 0x6
+ 1105 0047 40       		.uleb128 0x40
+ 1106 0048 18       		.uleb128 0x18
+ 1107 0049 9742     		.uleb128 0x2117
+ 1108 004b 19       		.uleb128 0x19
+ 1109 004c 01       		.uleb128 0x1
+ 1110 004d 13       		.uleb128 0x13
+ 1111 004e 00       		.byte	0
+ 1112 004f 00       		.byte	0
+ 1113 0050 06       		.uleb128 0x6
+ 1114 0051 34       		.uleb128 0x34
+ 1115 0052 00       		.byte	0
+ 1116 0053 03       		.uleb128 0x3
+ 1117 0054 0E       		.uleb128 0xe
+ 1118 0055 3A       		.uleb128 0x3a
+ 1119 0056 0B       		.uleb128 0xb
+ 1120 0057 3B       		.uleb128 0x3b
+ 1121 0058 0B       		.uleb128 0xb
+ 1122 0059 49       		.uleb128 0x49
+ 1123 005a 13       		.uleb128 0x13
+ 1124 005b 02       		.uleb128 0x2
+ 1125 005c 18       		.uleb128 0x18
+ 1126 005d 00       		.byte	0
+ 1127 005e 00       		.byte	0
+ 1128 005f 07       		.uleb128 0x7
+ 1129 0060 898201   		.uleb128 0x4109
+ 1130 0063 01       		.byte	0x1
+ 1131 0064 11       		.uleb128 0x11
+ 1132 0065 01       		.uleb128 0x1
+ 1133 0066 31       		.uleb128 0x31
+ 1134 0067 13       		.uleb128 0x13
+ 1135 0068 01       		.uleb128 0x1
+ 1136 0069 13       		.uleb128 0x13
+ 1137 006a 00       		.byte	0
+ 1138 006b 00       		.byte	0
+ 1139 006c 08       		.uleb128 0x8
+ 1140 006d 8A8201   		.uleb128 0x410a
+ 1141 0070 00       		.byte	0
+ 1142 0071 02       		.uleb128 0x2
+ 1143 0072 18       		.uleb128 0x18
+ 1144 0073 9142     		.uleb128 0x2111
+ 1145 0075 18       		.uleb128 0x18
+ 1146 0076 00       		.byte	0
+ 1147 0077 00       		.byte	0
+ 1148 0078 09       		.uleb128 0x9
+ 1149 0079 898201   		.uleb128 0x4109
+ 1150 007c 00       		.byte	0
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 26
+
+
+ 1151 007d 11       		.uleb128 0x11
+ 1152 007e 01       		.uleb128 0x1
+ 1153 007f 31       		.uleb128 0x31
+ 1154 0080 13       		.uleb128 0x13
+ 1155 0081 00       		.byte	0
+ 1156 0082 00       		.byte	0
+ 1157 0083 0A       		.uleb128 0xa
+ 1158 0084 2E       		.uleb128 0x2e
+ 1159 0085 01       		.byte	0x1
+ 1160 0086 3F       		.uleb128 0x3f
+ 1161 0087 19       		.uleb128 0x19
+ 1162 0088 03       		.uleb128 0x3
+ 1163 0089 0E       		.uleb128 0xe
+ 1164 008a 3A       		.uleb128 0x3a
+ 1165 008b 0B       		.uleb128 0xb
+ 1166 008c 3B       		.uleb128 0x3b
+ 1167 008d 0B       		.uleb128 0xb
+ 1168 008e 27       		.uleb128 0x27
+ 1169 008f 19       		.uleb128 0x19
+ 1170 0090 11       		.uleb128 0x11
+ 1171 0091 01       		.uleb128 0x1
+ 1172 0092 12       		.uleb128 0x12
+ 1173 0093 06       		.uleb128 0x6
+ 1174 0094 40       		.uleb128 0x40
+ 1175 0095 18       		.uleb128 0x18
+ 1176 0096 9742     		.uleb128 0x2117
+ 1177 0098 19       		.uleb128 0x19
+ 1178 0099 01       		.uleb128 0x1
+ 1179 009a 13       		.uleb128 0x13
+ 1180 009b 00       		.byte	0
+ 1181 009c 00       		.byte	0
+ 1182 009d 0B       		.uleb128 0xb
+ 1183 009e 05       		.uleb128 0x5
+ 1184 009f 00       		.byte	0
+ 1185 00a0 03       		.uleb128 0x3
+ 1186 00a1 0E       		.uleb128 0xe
+ 1187 00a2 3A       		.uleb128 0x3a
+ 1188 00a3 0B       		.uleb128 0xb
+ 1189 00a4 3B       		.uleb128 0x3b
+ 1190 00a5 0B       		.uleb128 0xb
+ 1191 00a6 49       		.uleb128 0x49
+ 1192 00a7 13       		.uleb128 0x13
+ 1193 00a8 02       		.uleb128 0x2
+ 1194 00a9 17       		.uleb128 0x17
+ 1195 00aa 00       		.byte	0
+ 1196 00ab 00       		.byte	0
+ 1197 00ac 0C       		.uleb128 0xc
+ 1198 00ad 898201   		.uleb128 0x4109
+ 1199 00b0 01       		.byte	0x1
+ 1200 00b1 11       		.uleb128 0x11
+ 1201 00b2 01       		.uleb128 0x1
+ 1202 00b3 31       		.uleb128 0x31
+ 1203 00b4 13       		.uleb128 0x13
+ 1204 00b5 00       		.byte	0
+ 1205 00b6 00       		.byte	0
+ 1206 00b7 0D       		.uleb128 0xd
+ 1207 00b8 34       		.uleb128 0x34
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 27
+
+
+ 1208 00b9 00       		.byte	0
+ 1209 00ba 03       		.uleb128 0x3
+ 1210 00bb 0E       		.uleb128 0xe
+ 1211 00bc 3A       		.uleb128 0x3a
+ 1212 00bd 0B       		.uleb128 0xb
+ 1213 00be 3B       		.uleb128 0x3b
+ 1214 00bf 0B       		.uleb128 0xb
+ 1215 00c0 49       		.uleb128 0x49
+ 1216 00c1 13       		.uleb128 0x13
+ 1217 00c2 02       		.uleb128 0x2
+ 1218 00c3 17       		.uleb128 0x17
+ 1219 00c4 00       		.byte	0
+ 1220 00c5 00       		.byte	0
+ 1221 00c6 0E       		.uleb128 0xe
+ 1222 00c7 2E       		.uleb128 0x2e
+ 1223 00c8 01       		.byte	0x1
+ 1224 00c9 3F       		.uleb128 0x3f
+ 1225 00ca 19       		.uleb128 0x19
+ 1226 00cb 03       		.uleb128 0x3
+ 1227 00cc 0E       		.uleb128 0xe
+ 1228 00cd 3A       		.uleb128 0x3a
+ 1229 00ce 0B       		.uleb128 0xb
+ 1230 00cf 3B       		.uleb128 0x3b
+ 1231 00d0 0B       		.uleb128 0xb
+ 1232 00d1 27       		.uleb128 0x27
+ 1233 00d2 19       		.uleb128 0x19
+ 1234 00d3 49       		.uleb128 0x49
+ 1235 00d4 13       		.uleb128 0x13
+ 1236 00d5 11       		.uleb128 0x11
+ 1237 00d6 01       		.uleb128 0x1
+ 1238 00d7 12       		.uleb128 0x12
+ 1239 00d8 06       		.uleb128 0x6
+ 1240 00d9 40       		.uleb128 0x40
+ 1241 00da 18       		.uleb128 0x18
+ 1242 00db 9642     		.uleb128 0x2116
+ 1243 00dd 19       		.uleb128 0x19
+ 1244 00de 01       		.uleb128 0x1
+ 1245 00df 13       		.uleb128 0x13
+ 1246 00e0 00       		.byte	0
+ 1247 00e1 00       		.byte	0
+ 1248 00e2 0F       		.uleb128 0xf
+ 1249 00e3 0B       		.uleb128 0xb
+ 1250 00e4 01       		.byte	0x1
+ 1251 00e5 11       		.uleb128 0x11
+ 1252 00e6 01       		.uleb128 0x1
+ 1253 00e7 12       		.uleb128 0x12
+ 1254 00e8 06       		.uleb128 0x6
+ 1255 00e9 01       		.uleb128 0x1
+ 1256 00ea 13       		.uleb128 0x13
+ 1257 00eb 00       		.byte	0
+ 1258 00ec 00       		.byte	0
+ 1259 00ed 10       		.uleb128 0x10
+ 1260 00ee 34       		.uleb128 0x34
+ 1261 00ef 00       		.byte	0
+ 1262 00f0 03       		.uleb128 0x3
+ 1263 00f1 08       		.uleb128 0x8
+ 1264 00f2 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 28
+
+
+ 1265 00f3 0B       		.uleb128 0xb
+ 1266 00f4 3B       		.uleb128 0x3b
+ 1267 00f5 0B       		.uleb128 0xb
+ 1268 00f6 49       		.uleb128 0x49
+ 1269 00f7 13       		.uleb128 0x13
+ 1270 00f8 02       		.uleb128 0x2
+ 1271 00f9 17       		.uleb128 0x17
+ 1272 00fa 00       		.byte	0
+ 1273 00fb 00       		.byte	0
+ 1274 00fc 11       		.uleb128 0x11
+ 1275 00fd 01       		.uleb128 0x1
+ 1276 00fe 01       		.byte	0x1
+ 1277 00ff 49       		.uleb128 0x49
+ 1278 0100 13       		.uleb128 0x13
+ 1279 0101 01       		.uleb128 0x1
+ 1280 0102 13       		.uleb128 0x13
+ 1281 0103 00       		.byte	0
+ 1282 0104 00       		.byte	0
+ 1283 0105 12       		.uleb128 0x12
+ 1284 0106 21       		.uleb128 0x21
+ 1285 0107 00       		.byte	0
+ 1286 0108 49       		.uleb128 0x49
+ 1287 0109 13       		.uleb128 0x13
+ 1288 010a 2F       		.uleb128 0x2f
+ 1289 010b 0B       		.uleb128 0xb
+ 1290 010c 00       		.byte	0
+ 1291 010d 00       		.byte	0
+ 1292 010e 13       		.uleb128 0x13
+ 1293 010f 2E       		.uleb128 0x2e
+ 1294 0110 00       		.byte	0
+ 1295 0111 3F       		.uleb128 0x3f
+ 1296 0112 19       		.uleb128 0x19
+ 1297 0113 3C       		.uleb128 0x3c
+ 1298 0114 19       		.uleb128 0x19
+ 1299 0115 6E       		.uleb128 0x6e
+ 1300 0116 0E       		.uleb128 0xe
+ 1301 0117 03       		.uleb128 0x3
+ 1302 0118 0E       		.uleb128 0xe
+ 1303 0119 3A       		.uleb128 0x3a
+ 1304 011a 0B       		.uleb128 0xb
+ 1305 011b 3B       		.uleb128 0x3b
+ 1306 011c 0B       		.uleb128 0xb
+ 1307 011d 00       		.byte	0
+ 1308 011e 00       		.byte	0
+ 1309 011f 00       		.byte	0
+ 1310              		.section	.debug_loc,"",%progbits
+ 1311              	.Ldebug_loc0:
+ 1312              	.LLST0:
+ 1313 0000 00000000 		.4byte	.LVL5
+ 1314 0004 06000000 		.4byte	.LVL6
+ 1315 0008 0100     		.2byte	0x1
+ 1316 000a 50       		.byte	0x50
+ 1317 000b 06000000 		.4byte	.LVL6
+ 1318 000f 2A000000 		.4byte	.LFE37
+ 1319 0013 0400     		.2byte	0x4
+ 1320 0015 F3       		.byte	0xf3
+ 1321 0016 01       		.uleb128 0x1
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 29
+
+
+ 1322 0017 50       		.byte	0x50
+ 1323 0018 9F       		.byte	0x9f
+ 1324 0019 00000000 		.4byte	0
+ 1325 001d 00000000 		.4byte	0
+ 1326              	.LLST1:
+ 1327 0021 00000000 		.4byte	.LVL18
+ 1328 0025 08000000 		.4byte	.LVL20
+ 1329 0029 0100     		.2byte	0x1
+ 1330 002b 50       		.byte	0x50
+ 1331 002c 08000000 		.4byte	.LVL20
+ 1332 0030 1E000000 		.4byte	.LFE39
+ 1333 0034 0400     		.2byte	0x4
+ 1334 0036 F3       		.byte	0xf3
+ 1335 0037 01       		.uleb128 0x1
+ 1336 0038 50       		.byte	0x50
+ 1337 0039 9F       		.byte	0x9f
+ 1338 003a 00000000 		.4byte	0
+ 1339 003e 00000000 		.4byte	0
+ 1340              	.LLST2:
+ 1341 0042 10000000 		.4byte	.LVL21
+ 1342 0046 13000000 		.4byte	.LVL22-1
+ 1343 004a 0100     		.2byte	0x1
+ 1344 004c 50       		.byte	0x50
+ 1345 004d 13000000 		.4byte	.LVL22-1
+ 1346 0051 16000000 		.4byte	.LVL23
+ 1347 0055 0800     		.2byte	0x8
+ 1348 0057 75       		.byte	0x75
+ 1349 0058 00       		.sleb128 0
+ 1350 0059 74       		.byte	0x74
+ 1351 005a 00       		.sleb128 0
+ 1352 005b 26       		.byte	0x26
+ 1353 005c 31       		.byte	0x31
+ 1354 005d 1A       		.byte	0x1a
+ 1355 005e 9F       		.byte	0x9f
+ 1356 005f 16000000 		.4byte	.LVL23
+ 1357 0063 18000000 		.4byte	.LVL24
+ 1358 0067 0800     		.2byte	0x8
+ 1359 0069 75       		.byte	0x75
+ 1360 006a 00       		.sleb128 0
+ 1361 006b 74       		.byte	0x74
+ 1362 006c 7F       		.sleb128 -1
+ 1363 006d 26       		.byte	0x26
+ 1364 006e 31       		.byte	0x31
+ 1365 006f 1A       		.byte	0x1a
+ 1366 0070 9F       		.byte	0x9f
+ 1367 0071 00000000 		.4byte	0
+ 1368 0075 00000000 		.4byte	0
+ 1369              	.LLST3:
+ 1370 0079 04000000 		.4byte	.LVL19
+ 1371 007d 08000000 		.4byte	.LVL20
+ 1372 0081 0200     		.2byte	0x2
+ 1373 0083 30       		.byte	0x30
+ 1374 0084 9F       		.byte	0x9f
+ 1375 0085 08000000 		.4byte	.LVL20
+ 1376 0089 16000000 		.4byte	.LVL23
+ 1377 008d 0100     		.2byte	0x1
+ 1378 008f 54       		.byte	0x54
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 30
+
+
+ 1379 0090 18000000 		.4byte	.LVL24
+ 1380 0094 1C000000 		.4byte	.LVL25
+ 1381 0098 0100     		.2byte	0x1
+ 1382 009a 54       		.byte	0x54
+ 1383 009b 00000000 		.4byte	0
+ 1384 009f 00000000 		.4byte	0
+ 1385              	.LLST4:
+ 1386 00a3 02000000 		.4byte	.LVL26
+ 1387 00a7 08000000 		.4byte	.LVL27
+ 1388 00ab 0200     		.2byte	0x2
+ 1389 00ad 30       		.byte	0x30
+ 1390 00ae 9F       		.byte	0x9f
+ 1391 00af 08000000 		.4byte	.LVL27
+ 1392 00b3 10000000 		.4byte	.LVL29
+ 1393 00b7 0100     		.2byte	0x1
+ 1394 00b9 55       		.byte	0x55
+ 1395 00ba 12000000 		.4byte	.LVL30
+ 1396 00be 1C000000 		.4byte	.LVL34
+ 1397 00c2 0100     		.2byte	0x1
+ 1398 00c4 55       		.byte	0x55
+ 1399 00c5 00000000 		.4byte	0
+ 1400 00c9 00000000 		.4byte	0
+ 1401              	.LLST5:
+ 1402 00cd 02000000 		.4byte	.LVL26
+ 1403 00d1 08000000 		.4byte	.LVL27
+ 1404 00d5 0200     		.2byte	0x2
+ 1405 00d7 30       		.byte	0x30
+ 1406 00d8 9F       		.byte	0x9f
+ 1407 00d9 08000000 		.4byte	.LVL27
+ 1408 00dd 14000000 		.4byte	.LVL31
+ 1409 00e1 0100     		.2byte	0x1
+ 1410 00e3 54       		.byte	0x54
+ 1411 00e4 16000000 		.4byte	.LVL32
+ 1412 00e8 1C000000 		.4byte	.LVL33
+ 1413 00ec 0100     		.2byte	0x1
+ 1414 00ee 54       		.byte	0x54
+ 1415 00ef 00000000 		.4byte	0
+ 1416 00f3 00000000 		.4byte	0
+ 1417              	.LLST6:
+ 1418 00f7 00000000 		.4byte	.LVL35
+ 1419 00fb 20000000 		.4byte	.LVL38
+ 1420 00ff 0100     		.2byte	0x1
+ 1421 0101 50       		.byte	0x50
+ 1422 0102 20000000 		.4byte	.LVL38
+ 1423 0106 4C000000 		.4byte	.LVL45
+ 1424 010a 0400     		.2byte	0x4
+ 1425 010c F3       		.byte	0xf3
+ 1426 010d 01       		.uleb128 0x1
+ 1427 010e 50       		.byte	0x50
+ 1428 010f 9F       		.byte	0x9f
+ 1429 0110 4C000000 		.4byte	.LVL45
+ 1430 0114 4E000000 		.4byte	.LVL46
+ 1431 0118 0100     		.2byte	0x1
+ 1432 011a 54       		.byte	0x54
+ 1433 011b 4E000000 		.4byte	.LVL46
+ 1434 011f 50000000 		.4byte	.LVL47
+ 1435 0123 0300     		.2byte	0x3
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 31
+
+
+ 1436 0125 74       		.byte	0x74
+ 1437 0126 01       		.sleb128 1
+ 1438 0127 9F       		.byte	0x9f
+ 1439 0128 50000000 		.4byte	.LVL47
+ 1440 012c 60000000 		.4byte	.LVL50
+ 1441 0130 0400     		.2byte	0x4
+ 1442 0132 74       		.byte	0x74
+ 1443 0133 00       		.sleb128 0
+ 1444 0134 20       		.byte	0x20
+ 1445 0135 9F       		.byte	0x9f
+ 1446 0136 60000000 		.4byte	.LVL50
+ 1447 013a 64000000 		.4byte	.LVL51
+ 1448 013e 0100     		.2byte	0x1
+ 1449 0140 50       		.byte	0x50
+ 1450 0141 64000000 		.4byte	.LVL51
+ 1451 0145 9A000000 		.4byte	.LVL56
+ 1452 0149 0400     		.2byte	0x4
+ 1453 014b F3       		.byte	0xf3
+ 1454 014c 01       		.uleb128 0x1
+ 1455 014d 50       		.byte	0x50
+ 1456 014e 9F       		.byte	0x9f
+ 1457 014f 00000000 		.4byte	0
+ 1458 0153 00000000 		.4byte	0
+ 1459              	.LLST7:
+ 1460 0157 04000000 		.4byte	.LVL36
+ 1461 015b 16000000 		.4byte	.LVL37
+ 1462 015f 0600     		.2byte	0x6
+ 1463 0161 9E       		.byte	0x9e
+ 1464 0162 04       		.uleb128 0x4
+ 1465 0163 00000000 		.4byte	0
+ 1466 0167 16000000 		.4byte	.LVL37
+ 1467 016b 5E000000 		.4byte	.LVL49
+ 1468 016f 0100     		.2byte	0x1
+ 1469 0171 55       		.byte	0x55
+ 1470 0172 5E000000 		.4byte	.LVL49
+ 1471 0176 60000000 		.4byte	.LVL50
+ 1472 017a 0100     		.2byte	0x1
+ 1473 017c 50       		.byte	0x50
+ 1474 017d 60000000 		.4byte	.LVL50
+ 1475 0181 6A000000 		.4byte	.LVL52
+ 1476 0185 0600     		.2byte	0x6
+ 1477 0187 9E       		.byte	0x9e
+ 1478 0188 04       		.uleb128 0x4
+ 1479 0189 00000000 		.4byte	0
+ 1480 018d 6A000000 		.4byte	.LVL52
+ 1481 0191 75000000 		.4byte	.LVL53-1
+ 1482 0195 0100     		.2byte	0x1
+ 1483 0197 50       		.byte	0x50
+ 1484 0198 76000000 		.4byte	.LVL53
+ 1485 019c 81000000 		.4byte	.LVL54-1
+ 1486 01a0 0100     		.2byte	0x1
+ 1487 01a2 50       		.byte	0x50
+ 1488 01a3 82000000 		.4byte	.LVL54
+ 1489 01a7 8D000000 		.4byte	.LVL55-1
+ 1490 01ab 0100     		.2byte	0x1
+ 1491 01ad 50       		.byte	0x50
+ 1492 01ae 8E000000 		.4byte	.LVL55
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 32
+
+
+ 1493 01b2 99000000 		.4byte	.LVL56-1
+ 1494 01b6 0100     		.2byte	0x1
+ 1495 01b8 50       		.byte	0x50
+ 1496 01b9 9A000000 		.4byte	.LVL56
+ 1497 01bd A0000000 		.4byte	.LFE41
+ 1498 01c1 0100     		.2byte	0x1
+ 1499 01c3 50       		.byte	0x50
+ 1500 01c4 00000000 		.4byte	0
+ 1501 01c8 00000000 		.4byte	0
+ 1502              	.LLST8:
+ 1503 01cc 5A000000 		.4byte	.LVL69
+ 1504 01d0 5D000000 		.4byte	.LVL70-1
+ 1505 01d4 0100     		.2byte	0x1
+ 1506 01d6 50       		.byte	0x50
+ 1507 01d7 00000000 		.4byte	0
+ 1508 01db 00000000 		.4byte	0
+ 1509              	.LLST9:
+ 1510 01df 3C000000 		.4byte	.LVL65
+ 1511 01e3 40000000 		.4byte	.LVL66
+ 1512 01e7 0200     		.2byte	0x2
+ 1513 01e9 30       		.byte	0x30
+ 1514 01ea 9F       		.byte	0x9f
+ 1515 01eb 40000000 		.4byte	.LVL66
+ 1516 01ef 60000000 		.4byte	.LVL71
+ 1517 01f3 0100     		.2byte	0x1
+ 1518 01f5 54       		.byte	0x54
+ 1519 01f6 00000000 		.4byte	0
+ 1520 01fa 00000000 		.4byte	0
+ 1521              		.section	.debug_aranges,"",%progbits
+ 1522 0000 4C000000 		.4byte	0x4c
+ 1523 0004 0200     		.2byte	0x2
+ 1524 0006 00000000 		.4byte	.Ldebug_info0
+ 1525 000a 04       		.byte	0x4
+ 1526 000b 00       		.byte	0
+ 1527 000c 0000     		.2byte	0
+ 1528 000e 0000     		.2byte	0
+ 1529 0010 00000000 		.4byte	.LFB36
+ 1530 0014 22000000 		.4byte	.LFE36-.LFB36
+ 1531 0018 00000000 		.4byte	.LFB37
+ 1532 001c 2A000000 		.4byte	.LFE37-.LFB37
+ 1533 0020 00000000 		.4byte	.LFB38
+ 1534 0024 26000000 		.4byte	.LFE38-.LFB38
+ 1535 0028 00000000 		.4byte	.LFB39
+ 1536 002c 1E000000 		.4byte	.LFE39-.LFB39
+ 1537 0030 00000000 		.4byte	.LFB40
+ 1538 0034 1E000000 		.4byte	.LFE40-.LFB40
+ 1539 0038 00000000 		.4byte	.LFB41
+ 1540 003c A0000000 		.4byte	.LFE41-.LFB41
+ 1541 0040 00000000 		.4byte	.LFB42
+ 1542 0044 62000000 		.4byte	.LFE42-.LFB42
+ 1543 0048 00000000 		.4byte	0
+ 1544 004c 00000000 		.4byte	0
+ 1545              		.section	.debug_ranges,"",%progbits
+ 1546              	.Ldebug_ranges0:
+ 1547 0000 00000000 		.4byte	.LFB36
+ 1548 0004 22000000 		.4byte	.LFE36
+ 1549 0008 00000000 		.4byte	.LFB37
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 33
+
+
+ 1550 000c 2A000000 		.4byte	.LFE37
+ 1551 0010 00000000 		.4byte	.LFB38
+ 1552 0014 26000000 		.4byte	.LFE38
+ 1553 0018 00000000 		.4byte	.LFB39
+ 1554 001c 1E000000 		.4byte	.LFE39
+ 1555 0020 00000000 		.4byte	.LFB40
+ 1556 0024 1E000000 		.4byte	.LFE40
+ 1557 0028 00000000 		.4byte	.LFB41
+ 1558 002c A0000000 		.4byte	.LFE41
+ 1559 0030 00000000 		.4byte	.LFB42
+ 1560 0034 62000000 		.4byte	.LFE42
+ 1561 0038 00000000 		.4byte	0
+ 1562 003c 00000000 		.4byte	0
+ 1563              		.section	.debug_line,"",%progbits
+ 1564              	.Ldebug_line0:
+ 1565 0000 79010000 		.section	.debug_str,"MS",%progbits,1
+ 1565      02005E00 
+ 1565      00000201 
+ 1565      FB0E0D00 
+ 1565      01010101 
+ 1566              	.LASF23:
+ 1567 0000 42697450 		.ascii	"BitPayload\000"
+ 1567      61796C6F 
+ 1567      616400
+ 1568              	.LASF20:
+ 1569 000b 76616C75 		.ascii	"value\000"
+ 1569      6500
+ 1570              	.LASF3:
+ 1571 0011 73686F72 		.ascii	"short unsigned int\000"
+ 1571      7420756E 
+ 1571      7369676E 
+ 1571      65642069 
+ 1571      6E7400
+ 1572              	.LASF39:
+ 1573 0024 433A5C55 		.ascii	"C:\\Users\\aliag\\OneDrive\\Desktop\\304\\EGR304 PS"
+ 1573      73657273 
+ 1573      5C616C69 
+ 1573      61675C4F 
+ 1573      6E654472 
+ 1574 0051 6F432050 		.ascii	"oC Project Code\\Controller.cydsn\000"
+ 1574      726F6A65 
+ 1574      63742043 
+ 1574      6F64655C 
+ 1574      436F6E74 
+ 1575              	.LASF33:
+ 1576 0072 57697265 		.ascii	"Wire1_Write\000"
+ 1576      315F5772 
+ 1576      69746500 
+ 1577              	.LASF16:
+ 1578 007e 496E6974 		.ascii	"Initialize_1_wire\000"
+ 1578      69616C69 
+ 1578      7A655F31 
+ 1578      5F776972 
+ 1578      6500
+ 1579              	.LASF22:
+ 1580 0090 73746174 		.ascii	"status\000"
+ 1580      757300
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 34
+
+
+ 1581              	.LASF37:
+ 1582 0097 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 1582      43313120 
+ 1582      352E342E 
+ 1582      31203230 
+ 1582      31363036 
+ 1583 00ca 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m0 -mthumb -g -O"
+ 1583      20726576 
+ 1583      6973696F 
+ 1583      6E203233 
+ 1583      37373135 
+ 1584 00fd 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1584      66756E63 
+ 1584      74696F6E 
+ 1584      2D736563 
+ 1584      74696F6E 
+ 1585              	.LASF11:
+ 1586 0125 666C6F61 		.ascii	"float\000"
+ 1586      7400
+ 1587              	.LASF31:
+ 1588 012b 74656D70 		.ascii	"tempr\000"
+ 1588      7200
+ 1589              	.LASF7:
+ 1590 0131 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1590      206C6F6E 
+ 1590      6720756E 
+ 1590      7369676E 
+ 1590      65642069 
+ 1591              	.LASF1:
+ 1592 0148 756E7369 		.ascii	"unsigned char\000"
+ 1592      676E6564 
+ 1592      20636861 
+ 1592      7200
+ 1593              	.LASF28:
+ 1594 0156 74656D70 		.ascii	"temp_c\000"
+ 1594      5F6300
+ 1595              	.LASF5:
+ 1596 015d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1596      20756E73 
+ 1596      69676E65 
+ 1596      6420696E 
+ 1596      7400
+ 1597              	.LASF27:
+ 1598 016f 74656D70 		.ascii	"temp\000"
+ 1598      00
+ 1599              	.LASF9:
+ 1600 0174 75696E74 		.ascii	"uint8\000"
+ 1600      3800
+ 1601              	.LASF26:
+ 1602 017a 496E636F 		.ascii	"IncomingByte\000"
+ 1602      6D696E67 
+ 1602      42797465 
+ 1602      00
+ 1603              	.LASF12:
+ 1604 0187 646F7562 		.ascii	"double\000"
+ 1604      6C6500
+ 1605              	.LASF10:
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 35
+
+
+ 1606 018e 75696E74 		.ascii	"uint16\000"
+ 1606      313600
+ 1607              	.LASF38:
+ 1608 0195 74686572 		.ascii	"thermometer.c\000"
+ 1608      6D6F6D65 
+ 1608      7465722E 
+ 1608      6300
+ 1609              	.LASF17:
+ 1610 01a3 57726974 		.ascii	"Write_bit_1_wire\000"
+ 1610      655F6269 
+ 1610      745F315F 
+ 1610      77697265 
+ 1610      00
+ 1611              	.LASF34:
+ 1612 01b4 43794465 		.ascii	"CyDelayUs\000"
+ 1612      6C617955 
+ 1612      7300
+ 1613              	.LASF40:
+ 1614 01be 6D656173 		.ascii	"measure_celsius\000"
+ 1614      7572655F 
+ 1614      63656C73 
+ 1614      69757300 
+ 1615              	.LASF35:
+ 1616 01ce 57697265 		.ascii	"Wire1_Read\000"
+ 1616      315F5265 
+ 1616      616400
+ 1617              	.LASF8:
+ 1618 01d9 756E7369 		.ascii	"unsigned int\000"
+ 1618      676E6564 
+ 1618      20696E74 
+ 1618      00
+ 1619              	.LASF30:
+ 1620 01e6 73637261 		.ascii	"scratchpad\000"
+ 1620      74636870 
+ 1620      616400
+ 1621              	.LASF13:
+ 1622 01f1 63686172 		.ascii	"char\000"
+ 1622      00
+ 1623              	.LASF21:
+ 1624 01f6 7061796C 		.ascii	"payload\000"
+ 1624      6F616400 
+ 1625              	.LASF18:
+ 1626 01fe 52656164 		.ascii	"Read_bit_1_wire\000"
+ 1626      5F626974 
+ 1626      5F315F77 
+ 1626      69726500 
+ 1627              	.LASF15:
+ 1628 020e 73697A65 		.ascii	"sizetype\000"
+ 1628      74797065 
+ 1628      00
+ 1629              	.LASF6:
+ 1630 0217 6C6F6E67 		.ascii	"long long int\000"
+ 1630      206C6F6E 
+ 1630      6720696E 
+ 1630      7400
+ 1631              	.LASF24:
+ 1632 0225 73686966 		.ascii	"shiftcount\000"
+ARM GAS  C:\Users\aliag\AppData\Local\Temp\ccm7VYAl.s 			page 36
+
+
+ 1632      74636F75 
+ 1632      6E7400
+ 1633              	.LASF2:
+ 1634 0230 73686F72 		.ascii	"short int\000"
+ 1634      7420696E 
+ 1634      7400
+ 1635              	.LASF25:
+ 1636 023a 52656164 		.ascii	"Read8_1_wire\000"
+ 1636      385F315F 
+ 1636      77697265 
+ 1636      00
+ 1637              	.LASF19:
+ 1638 0247 57726974 		.ascii	"Write8_1_wire\000"
+ 1638      65385F31 
+ 1638      5F776972 
+ 1638      6500
+ 1639              	.LASF4:
+ 1640 0255 6C6F6E67 		.ascii	"long int\000"
+ 1640      20696E74 
+ 1640      00
+ 1641              	.LASF32:
+ 1642 025e 74656D70 		.ascii	"temp_cel\000"
+ 1642      5F63656C 
+ 1642      00
+ 1643              	.LASF14:
+ 1644 0267 6C6F6E67 		.ascii	"long double\000"
+ 1644      20646F75 
+ 1644      626C6500 
+ 1645              	.LASF0:
+ 1646 0273 7369676E 		.ascii	"signed char\000"
+ 1646      65642063 
+ 1646      68617200 
+ 1647              	.LASF36:
+ 1648 027f 43794465 		.ascii	"CyDelay\000"
+ 1648      6C617900 
+ 1649              	.LASF29:
+ 1650 0287 72656164 		.ascii	"read_temp\000"
+ 1650      5F74656D 
+ 1650      7000
+ 1651              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

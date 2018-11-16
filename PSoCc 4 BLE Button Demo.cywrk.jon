@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CyXmlSerializer>
+<!--This file is machine generated and read. It is not intended to be edited by hand.-->
+<!--Due to this, there is no schema for this file.-->
+<CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21 type_name="CyDesigner.Common.ProjMgmt.Model.CyPrjMgmtWrkspcCustomData" version="4">
+<CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997 type_name="CyDesigner.Common.Base.CyCustomData" version="2">
+<userData>
+<dataGuid v="1b906a0f-a7b6-4e4d-a428-82f98b53cb35">
+<CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35 type_name="CyDesigner.Common.ProjMgmt.GUI.CyExplorerWindow+CyExplorerWindowState" version="3" SelectedTab="Source">
+<TreeKeys>
+<v>Source</v>
+<v>Components</v>
+<v>Output</v>
+</TreeKeys>
+<TreeStates>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Pins</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Analog</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\DMA</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Clocks</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Interrupts</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\System</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Directives</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Flash Security</v>
+<v>PSoCc 4 BLE Button Demo\Client\Header Files</v>
+<v>PSoCc 4 BLE Button Demo\Client\Header Files\cyapicallbacks.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Header Files\main.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Source Files</v>
+<v>PSoCc 4 BLE Button Demo\Client\Source Files\main.c</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Pins</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Analog</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\DMA</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Clocks</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Interrupts</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\System</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Directives</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Flash Security</v>
+<v>PSoCc 4 BLE Button Demo\Server\Header Files</v>
+<v>PSoCc 4 BLE Button Demo\Server\Header Files\cyapicallbacks.h</v>
+<v>PSoCc 4 BLE Button Demo\Server\Header Files\main.h</v>
+<v>PSoCc 4 BLE Button Demo\Server\Source Files</v>
+<v>PSoCc 4 BLE Button Demo\Server\Source Files\main.c</v>
+<v>PSoCc 4 BLE Button Demo\Server\Generated_Source</v>
+<v>PSoCc 4 BLE Button Demo\Server\Generated_Source\PSoC4</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Pins</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Analog</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\DMA</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Clocks</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Interrupts</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\System</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Directives</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.cydwr\Flash Security</v>
+<v>PSoCc 4 BLE Button Demo\Client\Header Files</v>
+<v>PSoCc 4 BLE Button Demo\Client\Header Files\cyapicallbacks.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Header Files\main.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Source Files</v>
+<v>PSoCc 4 BLE Button Demo\Client\Source Files\main.c</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\BLE_1</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\BLE_1_bless_isr</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cy_boot</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cy_dmac</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cy_lfclk</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\Em_EEPROM_Dynamic</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\Red_LED</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cycodeshareexport.ld</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cycodeshareimport.ld</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cycodeshareimport.scat</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cydevice_trm.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cydevicegnu_trm.inc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cydeviceiar_trm.inc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cydevicerv_trm.inc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cydisabledsheets.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cyfitter.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cyfitter_cfg.c</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cyfitter_cfg.h</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cyfittergnu.inc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cyfitteriar.inc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cyfitterrv.inc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\cymetadata.c</v>
+<v>PSoCc 4 BLE Button Demo\Client\Generated_Source\PSoC4\project.h</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Pins</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\Analog</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.cydwr\DMA</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Client\TopDesign\TopDesign.cysch</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Server\TopDesign\TopDesign.cysch</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Client\TopDesign\TopDesign.cysch</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\TopDesign</v>
+<v>PSoCc 4 BLE Button Demo\Server\TopDesign\TopDesign.cysch</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_bless_isr.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_custom.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_eventHandler.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_gatt.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_HAL_INT.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_1_HAL_PVT.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\Red_LED.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Listing Files\Red_LED_PM.lst</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Client.elf</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Client.hex</v>
+<v>PSoCc 4 BLE Button Demo\Client\CortexM0\ARM_GCC_541\Debug\Client.map</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.gpdsc</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.rpt</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client_timing.html</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_bless_isr.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_custom.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_eventHandler.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_gatt.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_HAL_INT.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\BLE_HAL_PVT.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\Cm0Start.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\cy_em_eeprom.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\CyBootAsmGnu.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\CyDMA.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\cyfitter_cfg.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\CyFlash.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLFClk.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\CyLib.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\cymetadata.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\cyPm.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\cyutils.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\main.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\Pin_Red.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\Pin_Red_PM.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\Switch_2.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Listing Files\Switch_2_PM.lst</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Server.elf</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Server.hex</v>
+<v>PSoCc 4 BLE Button Demo\Server\CortexM0\ARM_GCC_541\Debug\Server.map</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.gpdsc</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server.rpt</v>
+<v>PSoCc 4 BLE Button Demo\Server\Server_timing.html</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client.rpt</v>
+<v>PSoCc 4 BLE Button Demo\Client\Client_timing.html</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStates>
+<TreeKeysV2>
+<v>Datasheet</v>
+</TreeKeysV2>
+<TreeStatesV2>
+<CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237 type_name="CyDesigner.Common.Base.Controls.CyTreeViewState" version="1" SelectedNodeId="">
+<ExpandedNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\PSoC 4 Architecture TRM</v>
+<v>PSoCc 4 BLE Button Demo\Client\PSoC 4100 BLE Family Datasheet</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides\cy_boot_v5_70</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides\cy_dmac_v1_10</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides\cy_lfclk_v1_20</v>
+<v>PSoCc 4 BLE Button Demo\Client\BLE_v3_54.pdf</v>
+<v>PSoCc 4 BLE Button Demo\Client\cy_pins_v2_20.pdf</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\PSoC 4 Architecture TRM</v>
+<v>PSoCc 4 BLE Button Demo\Server\PSoC 4100 BLE Family Datasheet</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides\cy_boot_v5_70</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides\cy_dmac_v1_10</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides\cy_lfclk_v1_20</v>
+<v>PSoCc 4 BLE Button Demo\Server\BLE_v3_54.pdf</v>
+<v>PSoCc 4 BLE Button Demo\Server\cy_pins_v2_20</v>
+<v>PSoCc 4 BLE Button Demo\Server\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+</ExpandedNodeIds>
+<VisibleNodeIds>
+<v>PSoCc 4 BLE Button Demo</v>
+<v>PSoCc 4 BLE Button Demo\Client</v>
+<v>PSoCc 4 BLE Button Demo\Client\PSoC 4 Architecture TRM</v>
+<v>PSoCc 4 BLE Button Demo\Client\PSoC 4100 BLE Family Datasheet</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides\cy_boot_v5_70</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides\cy_dmac_v1_10</v>
+<v>PSoCc 4 BLE Button Demo\Client\System Reference Guides\cy_lfclk_v1_20</v>
+<v>PSoCc 4 BLE Button Demo\Client\BLE_v3_54.pdf</v>
+<v>PSoCc 4 BLE Button Demo\Client\cy_pins_v2_20.pdf</v>
+<v>PSoCc 4 BLE Button Demo\Server</v>
+<v>PSoCc 4 BLE Button Demo\Server\PSoC 4 Architecture TRM</v>
+<v>PSoCc 4 BLE Button Demo\Server\PSoC 4100 BLE Family Datasheet</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides\cy_boot_v5_70</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides\cy_dmac_v1_10</v>
+<v>PSoCc 4 BLE Button Demo\Server\System Reference Guides\cy_lfclk_v1_20</v>
+<v>PSoCc 4 BLE Button Demo\Server\BLE_v3_54.pdf</v>
+<v>PSoCc 4 BLE Button Demo\Server\cy_pins_v2_20</v>
+<v>PSoCc 4 BLE Button Demo\Server\cy_pins_v2_20\cy_pins_v2_20.pdf</v>
+</VisibleNodeIds>
+</CyGuid_2a325b3b-c96a-4e9f-b7a0-2c44ecb5f237>
+</TreeStatesV2>
+</CyGuid_1b906a0f-a7b6-4e4d-a428-82f98b53cb35>
+</dataGuid>
+</userData>
+</CyGuid_fdba8dfd-b15b-4469-9bbb-9e40c3e70997>
+<Unloaded />
+<OpenDocs />
+<OpenDocsLayout><![CDATA[<?xml version="1.0"?><!--
+
+  Actipro Docking/MDI for WinForms
+  Copyright (c) 2001-2016 Actipro Software LLC.  All rights reserved.
+  http://www.actiprosoftware.com
+
+--><DocumentLayout Version="1.0"><LayoutData><TabbedMdiRootContainer Orientation="Horizontal"><TabbedMdiContainer Size="1680, 721" SelectedTabbedMdiWindow="94c18593-5a69-4e40-9dc8-a1d747ad44d0"><ToolWindow Key="Start Page:bd4649ab-da6b-4d04-a663-c722b8bf99db:Start Page" Guid="94c18593-5a69-4e40-9dc8-a1d747ad44d0" /></TabbedMdiContainer></TabbedMdiRootContainer><FloatingContainers /></LayoutData></DocumentLayout>]]></OpenDocsLayout>
+<config v="" />
+<AutoUpdate v="true" />
+</CyGuid_843a90a4-0c4b-4e44-991d-05e7fb117a21>
+</CyXmlSerializer>
