@@ -1,6 +1,6 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2018-11-16T05:10:08Z")
+ (DATE "2018-11-17T02:40:54Z")
  (DESIGN "Client")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
@@ -15,6 +15,7 @@
     (INTERCONNECT ClockBlock.hfclk \\BLE_1\:bless_isr\\.clock (0.000:0.000:0.000))
     (INTERCONNECT \\BLE_1\:cy_m0s8_ble\\.interrupt \\BLE_1\:bless_isr\\.interrupt (1.000:1.000:1.000))
     (INTERCONNECT Red_LED\(0\)_PAD Red_LED\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Green_LED\(0\)_PAD Green_LED\(0\).pad_in (0.000:0.000:0.000))
    )
   )
  )

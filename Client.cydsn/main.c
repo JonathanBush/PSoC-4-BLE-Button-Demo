@@ -83,13 +83,13 @@ void LoadPeripheralDeviceData(void)
        Open your CySmart App in your phone. Serach for devices. It should list "Server BLE"
        device. Below the name it should list the MAC address of that device.
 	.*/
-    //00A050-BEEB02
-		peripheralAddress[5] = 0x00;
-		peripheralAddress[4] = 0xA0;
-		peripheralAddress[3] = 0x50;
-		peripheralAddress[2] = 0xBE;
-		peripheralAddress[1] = 0xEB;
-		peripheralAddress[0] = 0x02;
+    //01acb4-afe991
+		peripheralAddress[5] = 0x01;
+		peripheralAddress[4] = 0xAC;
+		peripheralAddress[3] = 0xB4;
+		peripheralAddress[2] = 0xAF;
+		peripheralAddress[1] = 0xE9;
+		peripheralAddress[0] = 0x91;
              
 }
 
@@ -188,7 +188,7 @@ void BluetoothEventHandler(uint32 event, void *eventparam)
 					information so to add it to our list */
 				scan_report = *(CYBLE_GAPC_ADV_REPORT_T*) eventparam;
 				
-				/*Check if the device listed is the one we want to connect, if so flat it for
+				/*Check if the device listed is the one we want to connect, if so flag it for
                  connection and stop scanning*/
 				HandleScanDevices(&scan_report);
 			}
@@ -283,11 +283,12 @@ void InitializeSystem(void)
 
 int main(void)
 {
-
     InitializeSystem();
     
     for(;;)
     {
+        /* DO NOT PUT ANY DELAYS IN THIS LOOP */
+        
         CyBle_ProcessEvents();
         if(peripheralFound) {
             CyBle_GapcConnectDevice(&connectPeriphDevice);
@@ -302,11 +303,12 @@ int main(void)
         
         if (deviceConnected) {
             CyBle_GattcReadCharacteristicValue(connHandle, 0x000Eu);    /* read values from server */
+            Red_LED_Write(HIGH);
+        } else {
+            Red_LED_Write(LOW);
         }
        
-        Red_LED_Write(led_enable);  /* turn the LED on or off based on the value read from the server */
-        
-        CyDelay(1000); /* update every second */
+        Green_LED_Write(led_enable);  /* turn the LED on or off based on the value read from the server */
         
     }
 }

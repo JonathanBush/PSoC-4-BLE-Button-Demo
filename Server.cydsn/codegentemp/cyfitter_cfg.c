@@ -307,7 +307,8 @@ void cyfitter_cfg(void)
 	CY_SET_REG32((void *)(CYREG_GPIO_PRT0_PC), 0x00D80000u);
 
 	/* IOPINS0_2 Starting address: CYDEV_GPIO_PRT2_BASE */
-	CY_SET_REG32((void *)(CYREG_GPIO_PRT2_PC), 0x00700000u);
+	CY_SET_REG32((void *)(CYDEV_GPIO_PRT2_BASE), 0x000000C0u);
+	CY_SET_REG32((void *)(CYREG_GPIO_PRT2_PC), 0x00500000u);
 
 
 	/* Setup clocks based on selections from Clock DWR */

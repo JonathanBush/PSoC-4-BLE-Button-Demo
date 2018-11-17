@@ -298,6 +298,9 @@ void cyfitter_cfg(void)
 		/* UDB_PA_2 Starting address: CYDEV_UDB_PA2_BASE */
 		CY_SET_REG32((void *)(CYDEV_UDB_PA2_BASE), 0x00990000u);
 
+		/* UDB_PA_3 Starting address: CYDEV_UDB_PA3_BASE */
+		CY_SET_REG32((void *)(CYDEV_UDB_PA3_BASE), 0x00990000u);
+
 		/* Enable digital routing */
 		CY_SET_XTND_REG8((void *)CYREG_UDB_UDBIF_BANK_CTL, (uint8)(CY_GET_XTND_REG8((void *)CYREG_UDB_UDBIF_BANK_CTL) | 0x06u));
 	}
@@ -307,7 +310,10 @@ void cyfitter_cfg(void)
 	CY_SET_REG32((void *)(CYREG_GPIO_PRT0_PC), 0x00D80000u);
 
 	/* IOPINS0_2 Starting address: CYDEV_GPIO_PRT2_BASE */
-	CY_SET_REG32((void *)(CYREG_GPIO_PRT2_PC), 0x00040000u);
+	CY_SET_REG32((void *)(CYREG_GPIO_PRT2_PC), 0x00100000u);
+
+	/* IOPINS0_3 Starting address: CYDEV_GPIO_PRT3_BASE */
+	CY_SET_REG32((void *)(CYREG_GPIO_PRT3_PC), 0x00100000u);
 
 
 	/* Setup clocks based on selections from Clock DWR */

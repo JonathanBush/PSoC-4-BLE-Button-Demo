@@ -106,7 +106,7 @@ uint8 cyBle_pendingFlashWrite;
 #endif  /* (CYBLE_BONDING_REQUIREMENT == CYBLE_BONDING_YES) */
 
 CYBLE_CALLBACK_T CyBle_ApplCallback;
-CYBLE_GAP_BD_ADDR_T cyBle_deviceAddress = {{0x00u, 0x00u, 0x00u, 0x50u, 0xA0u, 0x00u}, 0x00u };
+CYBLE_GAP_BD_ADDR_T cyBle_deviceAddress = {{0x89u, 0x00u, 0x00u, 0x5Bu, 0xA0u, 0x00u}, 0x00u };
 CYBLE_GAP_BD_ADDR_T * cyBle_sflashDeviceAddress = CYBLE_SFLASH_DEVICE_ADDRESS_PTR;
 
 

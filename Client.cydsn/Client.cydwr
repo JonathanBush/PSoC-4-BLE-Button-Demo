@@ -20,7 +20,7 @@
       <Data key="8d318d8b-cf7b-4b6b-b02c-ab1c5c49d0ba" value="Button" />
       <Data key="264be2d3-9481-494b-8d9c-c1905a45e9cc" value="Wire1" />
       <Data key="a453516f-77a9-4931-82a7-b4675fa72e64" value="Pump_1" />
-      <Data key="e851a3b9-efb8-48be-bbb8-b303b216c393" value="Cooler_1" />
+      <Data key="e851a3b9-efb8-48be-bbb8-b303b216c393" value="Green_LED" />
     </Group>
   </Group>
   <Group key="FlashSecurity">
@@ -3612,7 +3612,7 @@
     </Group>
     <Group key="e851a3b9-efb8-48be-bbb8-b303b216c393">
       <Group key="0">
-        <Data key="Port Format" value="1,5" />
+        <Data key="Port Format" value="3,6" />
       </Group>
     </Group>
   </Group>

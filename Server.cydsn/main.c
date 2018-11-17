@@ -18,6 +18,7 @@
 #include "main.h"
 #include "cyapicallbacks.h"
 
+
 /* this is the button state that we want the client to read */
 uint8 button_state;
 
@@ -27,6 +28,11 @@ Description: This function will update Server's GATTDB so that client can read t
              Here I am converting my counter value to RGB value and storing as 3 byte array
              in server's GATT DB. Whenever client do a read on server, the values in GATTDB
              will be sent to client.
+            
+            Switch_2 should be pull up resistor
+            LED should be open drain drives low
+            Match all names and numbers BLE Profiles 
+            Match GAP public address to peripheral address code 
 Parameters: counter - Number of times button has been pressed or value to be sent to client
 Return: - 
 */
@@ -89,7 +95,7 @@ void BluetoothEventHandler(uint32 event, void * eventParam)
             if(CyBle_GetState() == CYBLE_STATE_CONNECTED)
             {
                 //An indication that devices are connected via bluetooth
-                Pin_Red_Write(HIGH);
+                //Pin_Red_Write(HIGH);
             }
             
 		break;
@@ -98,19 +104,19 @@ void BluetoothEventHandler(uint32 event, void * eventParam)
 			/* This event is generated at GAP disconnection. 
 			* Restart advertisement */
 			CyBle_GappStartAdvertisement(CYBLE_ADVERTISING_FAST);
-            Pin_Red_Write(LOW);
-			break;
+            //Pin_Red_Write(LOW);
+		break;
 
 			
 	    case CYBLE_EVT_GATT_DISCONNECT_IND:
 			/* This event is generated at GATT disconnection */
 			//nCounter = 0; //After disconnection resetting my server state.
             updateGATTDB();
-            Pin_Red_Write(LOW);
+            //Pin_Red_Write(LOW);
             //After reset, start advertisement - server available for connection with client
             CyBle_GappStartAdvertisement(CYBLE_ADVERTISING_FAST);
             
-			break;	
+		break;	
 			
         default:
 
@@ -130,7 +136,7 @@ void InitializeSystem(void)
 {
     CySysPmUnfreezeIo();
     
-    button_state = 0;
+    button_state = 1;
     
 	/* Enable Global Interrupt Mask */
 	CyGlobalIntEnable;		
@@ -156,8 +162,9 @@ int main(void)
         button_state = Switch_2_Read(); /* read the current switch state */
         
         updateGATTDB(); /* update the GATT DB so that the client can read the new switch state */
-            
-        CyDelay(500);   /* wait a bit before checking again */
+        
+        Pin_Red_Write(!Pin_Red_Read());
+        CyDelay(250);   /* wait a bit before checking again */
 
     }
 }
