@@ -1,3 +1,3 @@
-# Component constraints for C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Client.cydsn\TopDesign\TopDesign.cysch
-# Project: C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Client.cydsn\Client.cyprj
-# Date: Sat, 17 Nov 2018 02:40:48 GMT
+# Component constraints for C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Client.cydsn\TopDesign\TopDesign.cysch
+# Project: C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Client.cydsn\Client.cyprj
+# Date: Wed, 21 Nov 2018 06:30:06 GMT

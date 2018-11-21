@@ -2,11 +2,19 @@
  * One-Way Communication demo client for PSoC 4 BLE.
  *
  * Pressing SW2 on the server Pioneer Kit base board should cause
- * the red LED to light on the client Pioneer Kit base board. 
+ * the green LED to light on the client Pioneer Kit base board.
+ * The red LED on the client Pioneer Kit base board is illuminated
+ * when the BLE connection to the server is established.
+ *
+ * Note: due to light color mixing, the RGB LED will appear yellow
+ * when the connection is established and the button on the server
+ * is pressed.
  * 
  * by Jonathan Bush
  * Arizona State University
- * 2018.11.15
+ * 2018.11.20
+ *
+ * with assistance from Alia Gilbert
  * 
  * Based on BluetoothCommunication by Harsha Kadekar
  * https://github.com/harsha-kadekar/BluetoothCommunication
@@ -80,16 +88,19 @@ void LoadPeripheralDeviceData(void)
 {
 	/* This stores the 6-byte BD address of peripheral device to which we have to connect.
        This is Servers MAC address. To know the MAC Address. Program your server, 
-       Open your CySmart App in your phone. Serach for devices. It should list "Server BLE"
+       Open your CySmart App in your phone. Search for devices. It should list "Server BLE"
        device. Below the name it should list the MAC address of that device.
-	.*/
-    //01acb4-afe991
+	
+       Please select a different address if you will be using this near other projects
+       which may have utilized this example code.
+       Address: 01ACB4-AFE992 
+    */
 		peripheralAddress[5] = 0x01;
 		peripheralAddress[4] = 0xAC;
 		peripheralAddress[3] = 0xB4;
 		peripheralAddress[2] = 0xAF;
 		peripheralAddress[1] = 0xE9;
-		peripheralAddress[0] = 0x91;
+		peripheralAddress[0] = 0x92;
              
 }
 
@@ -278,8 +289,6 @@ void InitializeSystem(void)
     sensor_data.values[2] = 0;
     
 }
-
-/* end borrowed code */
 
 int main(void)
 {

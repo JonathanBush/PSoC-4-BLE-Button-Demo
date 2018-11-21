@@ -37,6 +37,7 @@
 #include "Green_LED.h"
 #include "Green_LED_aliases.h"
 #include "BLE_1_bless_isr.h"
+#include "cy_em_eeprom.h"
 #include "core_cm0_psoc4.h"
 #include "CyFlash.h"
 #include "CyLib.h"

@@ -1,7 +1,8 @@
-C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Client.cydsn\Client.cyprj|99df0bfe-d658-40bf-854a-fe802bf0bcca
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|70e934b0-9dcf-4dca-9922-7a50089dc7d2
-C:\Users\jon\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|04e57f0f-0772-4b8f-bded-eed34417f3d0
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|5c30cab5-2f8c-4131-9bfe-fa6f7cbfc913
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|1883d5d3-9b6d-4b3e-a02a-b97edd163e84
-C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|12d34cf2-6941-460d-856d-959141146cba
-C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Server.cydsn\Server.cyprj|8dffcd4d-b202-4512-83b4-54c6340e17bf
+C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Client.cydsn\Client.cyprj|0547a3cc-9041-4295-80b6-560f3cd41dc5
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|873fc688-51ea-4983-8ffd-fcebf7b539cb
+C:\Users\jon\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|618466fe-adb2-4ed1-a8a0-64b1693acc3b
+C:\Users\jon\Documents\PSoC Creator\4.1\Downloads ( 4.1).cylib\Downloads ( 4.1).cyprj|c6956057-7146-406f-b0e2-2b60316dcc09
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|28ea7fe5-630a-451b-b7b6-68a4d2239f57
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|7f6811ce-b8d3-45e1-8252-9f167ed0c92f
+C:\Program Files (x86)\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|d4ddaf5a-ba4a-46bf-ada1-cd336d22ca34
+C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Server.cydsn\Server.cyprj|490f1d14-ad23-41a2-abbb-7a7eaf44dfcc

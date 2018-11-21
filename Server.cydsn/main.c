@@ -2,11 +2,14 @@
  * One-Way Communication demo server for PSoC 4 BLE.
  *
  * Pressing SW2 on the server Pioneer Kit base board should cause
- * the red LED to light on the client Pioneer Kit base board. 
+ * the red LED to illuminate on the client Pioneer Kit base board. 
+ * The red LED on the server will blink while the system is active.
  * 
  * by Jonathan Bush
  * Arizona State University
- * 2018.11.15
+ * 2018.11.20
+ *
+ * with assistance from Alia Gilbert
  * 
  * Based on BluetoothCommunication by Harsha Kadekar
  * https://github.com/harsha-kadekar/BluetoothCommunication
@@ -18,6 +21,12 @@
 #include "main.h"
 #include "cyapicallbacks.h"
 
+/* Notes:
+   Switch_2 should be pull up resistor
+   LED should be open drain drives low
+   Match all names and numbers BLE Profiles 
+   Match GAP public address to peripheral address code 
+*/
 
 /* this is the button state that we want the client to read */
 uint8 button_state;
@@ -29,10 +38,6 @@ Description: This function will update Server's GATTDB so that client can read t
              in server's GATT DB. Whenever client do a read on server, the values in GATTDB
              will be sent to client.
             
-            Switch_2 should be pull up resistor
-            LED should be open drain drives low
-            Match all names and numbers BLE Profiles 
-            Match GAP public address to peripheral address code 
 Parameters: counter - Number of times button has been pressed or value to be sent to client
 Return: - 
 */
@@ -110,7 +115,7 @@ void BluetoothEventHandler(uint32 event, void * eventParam)
 			
 	    case CYBLE_EVT_GATT_DISCONNECT_IND:
 			/* This event is generated at GATT disconnection */
-			//nCounter = 0; //After disconnection resetting my server state.
+			
             updateGATTDB();
             //Pin_Red_Write(LOW);
             //After reset, start advertisement - server available for connection with client
@@ -163,7 +168,8 @@ int main(void)
         
         updateGATTDB(); /* update the GATT DB so that the client can read the new switch state */
         
-        Pin_Red_Write(!Pin_Red_Read());
+        Pin_Red_Write(!Pin_Red_Read()); /* toggle the red LED */
+        
         CyDelay(250);   /* wait a bit before checking again */
 
     }

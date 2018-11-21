@@ -37,6 +37,7 @@
 #include "Pin_Red.h"
 #include "Pin_Red_aliases.h"
 #include "BLE_bless_isr.h"
+#include "cy_em_eeprom.h"
 #include "core_cm0_psoc4.h"
 #include "CyFlash.h"
 #include "CyLib.h"

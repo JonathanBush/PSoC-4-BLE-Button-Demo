@@ -1,18 +1,18 @@
---------------- Build Started: 11/16/2018 18:50:58 Project: Client, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Build Started: 11/20/2018 23:37:57 Project: Client, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
+arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM0\ARM_GCC_541\Debug\main.o
 main.c: In function 'BluetoothEventHandler':
-main.c:155:24: warning: variable 'apiResult' set but not used [-Wunused-but-set-variable]
+main.c:166:24: warning: variable 'apiResult' set but not used [-Wunused-but-set-variable]
   CYBLE_API_RESULT_T    apiResult;
                         ^
-arm-none-eabi-gcc.exe -mcpu=cortex-m0 -mthumb -I. -IGenerated_Source\PSoC4 -Wa,-alh=.\CortexM0\ARM_GCC_541\Debug/main.lst -g -D DEBUG -D CY_CORE_ID=0 -Wall -ffunction-sections -ffat-lto-objects -Og -c main.c -o .\CortexM0\ARM_GCC_541\Debug\main.o
+arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Debug\Client.a .\CortexM0\ARM_GCC_541\Debug\BLE_1.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_gatt.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_eventHandler.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_INT.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_PVT.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_custom.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_bless_isr.o .\CortexM0\ARM_GCC_541\Debug\CyFlash.o .\CortexM0\ARM_GCC_541\Debug\CyLib.o .\CortexM0\ARM_GCC_541\Debug\cyPm.o .\CortexM0\ARM_GCC_541\Debug\cyutils.o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o .\CortexM0\ARM_GCC_541\Debug\cy_em_eeprom.o .\CortexM0\ARM_GCC_541\Debug\Red_LED.o .\CortexM0\ARM_GCC_541\Debug\Red_LED_PM.o .\CortexM0\ARM_GCC_541\Debug\Green_LED.o .\CortexM0\ARM_GCC_541\Debug\Green_LED_PM.o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o
 arm-none-eabi-ar.exe: creating .\CortexM0\ARM_GCC_541\Debug\Client.a
-arm-none-eabi-ar.exe -rs .\CortexM0\ARM_GCC_541\Debug\Client.a .\CortexM0\ARM_GCC_541\Debug\BLE_1.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_gatt.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_eventHandler.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_INT.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_HAL_PVT.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_custom.o .\CortexM0\ARM_GCC_541\Debug\BLE_1_bless_isr.o .\CortexM0\ARM_GCC_541\Debug\CyFlash.o .\CortexM0\ARM_GCC_541\Debug\CyLib.o .\CortexM0\ARM_GCC_541\Debug\cyPm.o .\CortexM0\ARM_GCC_541\Debug\cyutils.o .\CortexM0\ARM_GCC_541\Debug\CyDMA.o .\CortexM0\ARM_GCC_541\Debug\CyLFClk.o .\CortexM0\ARM_GCC_541\Debug\Red_LED.o .\CortexM0\ARM_GCC_541\Debug\Red_LED_PM.o .\CortexM0\ARM_GCC_541\Debug\Green_LED.o .\CortexM0\ARM_GCC_541\Debug\Green_LED_PM.o .\CortexM0\ARM_GCC_541\Debug\CyBootAsmGnu.o
-arm-none-eabi-gcc.exe -Wl,--start-group -o C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Client.cydsn\CortexM0\ARM_GCC_541\Debug\Client.elf .\CortexM0\ARM_GCC_541\Debug\main.o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o .\CortexM0\ARM_GCC_541\Debug\Client.a "..\..\..\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\BLE_v3_54\Library\gccCyBLEStack_BLE_SOC_CENTRAL.a" -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Debug/Client.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -u _printf_float -Wl,--gc-sections -g -ffunction-sections -Og -ffat-lto-objects -Wl,--end-group
-cyelftool.exe -C C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Client.cydsn\CortexM0\ARM_GCC_541\Debug\Client.elf --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
+arm-none-eabi-gcc.exe -Wl,--start-group -o C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Client.cydsn\CortexM0\ARM_GCC_541\Debug\Client.elf .\CortexM0\ARM_GCC_541\Debug\main.o .\CortexM0\ARM_GCC_541\Debug\cyfitter_cfg.o .\CortexM0\ARM_GCC_541\Debug\cymetadata.o .\CortexM0\ARM_GCC_541\Debug\Cm0Start.o .\CortexM0\ARM_GCC_541\Debug\Client.a "..\..\..\PSoC Creator\4.2\Downloads ( 4.2).cylib\BLE_v3_54\Library\gccCyBLEStack_BLE_SOC_CENTRAL.a" -mcpu=cortex-m0 -mthumb -L Generated_Source\PSoC4 -Wl,-Map,.\CortexM0\ARM_GCC_541\Debug/Client.map -T Generated_Source\PSoC4\cm0gcc.ld -specs=nano.specs -u _printf_float -Wl,--gc-sections -g -ffunction-sections -Og -ffat-lto-objects -Wl,--end-group
+cyelftool.exe -C C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Client.cydsn\CortexM0\ARM_GCC_541\Debug\Client.elf --flash_row_size 256 --flash_size 262144 --flash_offset 0x00000000
 No ELF section .cychecksum found, creating one
 Application checksum calculated and stored in ELF section .cychecksum
 Checksum calculated and stored in ELF section .cymeta
-cyelftool.exe -S C:\Users\jon\Downloads\PSoC-4-BLE-Button-Demo-master\Client.cydsn\CortexM0\ARM_GCC_541\Debug\Client.elf
-Flash used: 100707 of 262144 bytes (38.4%).
-SRAM used: 11272 of 32768 bytes (34.4%). Stack: 2048 bytes. Heap: 128 bytes.
---------------- Build Succeeded: 11/16/2018 18:51:01 ---------------
+cyelftool.exe -S C:\Users\jon\Documents\Alia\PSoC-4-BLE-Button-Demo\Client.cydsn\CortexM0\ARM_GCC_541\Debug\Client.elf
+Flash used: 100731 of 262144 bytes (38.4%).
+SRAM used: 11288 of 32768 bytes (34.4%). Stack: 2048 bytes. Heap: 128 bytes.
+--------------- Build Succeeded: 11/20/2018 23:37:59 ---------------

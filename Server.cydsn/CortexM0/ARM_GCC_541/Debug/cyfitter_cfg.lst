@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 1
 
 
    1              		.syntax unified
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
   29:Generated_Source\PSoC4/cyfitter_cfg.c **** #if defined(__GNUC__) || defined(__ARMCC_VERSION)
   30:Generated_Source\PSoC4/cyfitter_cfg.c ****     #define CYPACKED 
   31:Generated_Source\PSoC4/cyfitter_cfg.c ****     #define CYPACKED_ATTR __attribute__ ((packed))
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 2
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 2
 
 
   32:Generated_Source\PSoC4/cyfitter_cfg.c ****     #define CYALIGNED __attribute__ ((aligned))
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
   86:Generated_Source\PSoC4/cyfitter_cfg.c **** }
   87:Generated_Source\PSoC4/cyfitter_cfg.c **** CY_CFG_UNUSED
   88:Generated_Source\PSoC4/cyfitter_cfg.c **** static void CYCONFIGCPYCODE(void *dest, const void *src, size_t n);
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 3
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 3
 
 
   89:Generated_Source\PSoC4/cyfitter_cfg.c **** CY_CFG_UNUSED
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  143:Generated_Source\PSoC4/cyfitter_cfg.c ****     /* `#END` */
  144:Generated_Source\PSoC4/cyfitter_cfg.c **** 
  145:Generated_Source\PSoC4/cyfitter_cfg.c ****     while(1) {}
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 4
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 4
 
 
  146:Generated_Source\PSoC4/cyfitter_cfg.c **** #endif /* CY_CFG_CLOCK_STARTUP_ERROR_CALLBACK */
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  200:Generated_Source\PSoC4/cyfitter_cfg.c **** 
  201:Generated_Source\PSoC4/cyfitter_cfg.c **** 	/* Setup phase aligned clocks */
  202:Generated_Source\PSoC4/cyfitter_cfg.c **** 
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 5
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 5
 
 
  203:Generated_Source\PSoC4/cyfitter_cfg.c **** 	/* CYDEV_CLK_IMO_CONFIG Starting address: CYDEV_CLK_IMO_CONFIG */
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  241:Generated_Source\PSoC4/cyfitter_cfg.c **** }
   43              		.loc 1 241 0
   44              		@ sp needed
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 6
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 6
 
 
   45 0010 7047     		bx	lr
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
   95              		.cfi_def_cfa_offset 24
   96              		.cfi_offset 3, -24
   97              		.cfi_offset 4, -20
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 7
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 7
 
 
   98              		.cfi_offset 5, -16
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  142 003e 174B     		ldr	r3, .L6+32
  143 0040 1F60     		str	r7, [r3]
  196:Generated_Source\PSoC4/cyfitter_cfg.c **** 	/* Start the ECO and do not check status since it is not needed for HFCLK */
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 8
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 8
 
 
  144              		.loc 1 196 0
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  189 0084 06000080 		.word	-2147483642
  190 0088 04010B40 		.word	1074462980
  191 008c 0C020B40 		.word	1074463244
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 9
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 9
 
 
  192 0090 78002E40 		.word	1076756600
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  221              	@ 266 "Generated_Source\PSoC4\cyfitter_cfg.c" 1
  222 00b6 72B6     		CPSID   i
  223              	@ 0 "" 2
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 10
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 10
 
 
  267:Generated_Source\PSoC4/cyfitter_cfg.c **** 
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  254              		.loc 1 286 0 discriminator 3
  255 00de 0134     		adds	r4, r4, #1
  256              	.LVL14:
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 11
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 11
 
 
  257 00e0 E4B2     		uxtb	r4, r4
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  289              		.loc 1 310 0
  290 010e C022     		movs	r2, #192
  291 0110 0C4B     		ldr	r3, .L11+28
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 12
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 12
 
 
  292 0112 1A60     		str	r2, [r3]
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  336              		.file 3 "Generated_Source\\PSoC4\\cytypes.h"
  337              		.file 4 "Generated_Source\\PSoC4\\CyLFClk.h"
  338              		.file 5 "Generated_Source\\PSoC4\\CyLib.h"
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 13
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 13
 
 
  339              		.section	.debug_info,"",%progbits
@@ -730,8 +730,8 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  345 000b 01       		.uleb128 0x1
  346 000c 33010000 		.4byte	.LASF34
  347 0010 0C       		.byte	0xc
- 348 0011 45020000 		.4byte	.LASF35
- 349 0015 6B020000 		.4byte	.LASF36
+ 348 0011 85020000 		.4byte	.LASF35
+ 349 0015 24020000 		.4byte	.LASF36
  350 0019 00000000 		.4byte	.Ldebug_ranges0+0
  351 001d 00000000 		.4byte	0
  352 0021 00000000 		.4byte	.Ldebug_line0
@@ -755,11 +755,11 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  370 0045 04       		.uleb128 0x4
  371 0046 08       		.byte	0x8
  372 0047 04       		.byte	0x4
- 373 0048 2D020000 		.4byte	.LASF2
+ 373 0048 6D020000 		.4byte	.LASF2
  374 004c 04       		.uleb128 0x4
  375 004d 01       		.byte	0x1
  376 004e 06       		.byte	0x6
- 377 004f 39020000 		.4byte	.LASF3
+ 377 004f 79020000 		.4byte	.LASF3
  378 0053 04       		.uleb128 0x4
  379 0054 01       		.byte	0x1
  380 0055 08       		.byte	0x8
@@ -775,10 +775,10 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  390 0068 04       		.uleb128 0x4
  391 0069 04       		.byte	0x4
  392 006a 05       		.byte	0x5
- 393 006b 24020000 		.4byte	.LASF7
+ 393 006b 64020000 		.4byte	.LASF7
  394 006f 04       		.uleb128 0x4
  395 0070 04       		.byte	0x4
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 14
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 14
 
 
  396 0071 07       		.byte	0x7
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  450 00e2 1B000000 		.4byte	.LASF37
  451 00e6 01       		.byte	0x1
  452 00e7 EC       		.byte	0xec
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 15
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 15
 
 
  453 00e8 00000000 		.4byte	.LFB6
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  507 014a B4000000 		.4byte	.LFE5-.LFB5
  508 014e 01       		.uleb128 0x1
  509 014f 9C       		.byte	0x9c
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 16
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 16
 
 
  510 0150 E7010000 		.4byte	0x1e7
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  564 01c0 0A       		.byte	0xa
  565 01c1 DC05     		.2byte	0x5dc
  566 01c3 00       		.byte	0
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 17
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 17
 
 
  567 01c4 0E       		.uleb128 0xe
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  621 0234 1301     		.2byte	0x113
  622 0236 0A020000 		.4byte	0x20a
  623 023a 13       		.uleb128 0x13
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 18
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 18
 
 
  624 023b 4A020000 		.4byte	0x24a
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  678 02ad 22       		.byte	0x22
  679 02ae 94       		.byte	0x94
  680 02af 02       		.byte	0x2
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 19
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 19
 
 
  681 02b0 0A       		.byte	0xa
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  735 0329 05       		.byte	0x5
  736 032a C3       		.byte	0xc3
  737 032b 00       		.byte	0
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 20
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 20
 
 
  738              		.section	.debug_abbrev,"",%progbits
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  792 0034 00       		.byte	0
  793 0035 00       		.byte	0
  794 0036 05       		.uleb128 0x5
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 21
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 21
 
 
  795 0037 0F       		.uleb128 0xf
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  849 006e 3B       		.uleb128 0x3b
  850 006f 0B       		.uleb128 0xb
  851 0070 27       		.uleb128 0x27
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 22
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 22
 
 
  852 0071 19       		.uleb128 0x19
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  906 00af 00       		.byte	0
  907 00b0 0E       		.uleb128 0xe
  908 00b1 898201   		.uleb128 0x4109
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 23
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 23
 
 
  909 00b4 01       		.byte	0x1
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  963 00eb 01       		.uleb128 0x1
  964 00ec 13       		.uleb128 0x13
  965 00ed 00       		.byte	0
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 24
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 24
 
 
  966 00ee 00       		.byte	0
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1020 0124 00       		.byte	0
  1021 0125 00       		.byte	0
  1022 0126 17       		.uleb128 0x17
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 25
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 25
 
 
  1023 0127 34       		.uleb128 0x34
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1077 015d 03       		.uleb128 0x3
  1078 015e 0E       		.uleb128 0xe
  1079 015f 3A       		.uleb128 0x3a
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 26
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 26
 
 
  1080 0160 0B       		.uleb128 0xb
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1134 006f 00000000 		.4byte	0
  1135 0073 00000000 		.4byte	0
  1136              	.LLST3:
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 27
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 27
 
 
  1137 0077 C2000000 		.4byte	.LVL12
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1191              		.section	.debug_line,"",%progbits
  1192              	.Ldebug_line0:
  1193 0000 57010000 		.section	.debug_str,"MS",%progbits,1
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 28
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 28
 
 
  1193      0200E300 
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1217 008c 72656738 		.ascii	"reg8\000"
  1217      00
  1218              	.LASF8:
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 29
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 29
 
 
  1219 0091 6C6F6E67 		.ascii	"long unsigned int\000"
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1245      206C6F6E 
  1245      6720756E 
  1245      7369676E 
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 30
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 30
 
 
  1245      65642069 
@@ -1795,36 +1795,36 @@ ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 1
  1265      57726974 
  1265      65496D6F 
  1265      46726571 
- 1266              	.LASF7:
- 1267 0224 6C6F6E67 		.ascii	"long int\000"
- 1267      20696E74 
-ARM GAS  C:\Users\jon\AppData\Local\Temp\cc9891nb.s 			page 31
+ 1266              	.LASF36:
+ 1267 0224 433A5C55 		.ascii	"C:\\Users\\jon\\Documents\\Alia\\PSoC-4-BLE-Button-"
+ 1267      73657273 
+ARM GAS  C:\Users\jon\AppData\Local\Temp\ccIRK24L.s 			page 31
 
 
- 1267      00
- 1268              	.LASF2:
- 1269 022d 6C6F6E67 		.ascii	"long double\000"
- 1269      20646F75 
- 1269      626C6500 
- 1270              	.LASF3:
- 1271 0239 7369676E 		.ascii	"signed char\000"
- 1271      65642063 
- 1271      68617200 
- 1272              	.LASF35:
- 1273 0245 47656E65 		.ascii	"Generated_Source\\PSoC4\\cyfitter_cfg.c\000"
- 1273      72617465 
- 1273      645F536F 
- 1273      75726365 
- 1273      5C50536F 
- 1274              	.LASF36:
- 1275 026b 433A5C55 		.ascii	"C:\\Users\\jon\\Downloads\\PSoC-4-BLE-Button-Demo-m"
- 1275      73657273 
- 1275      5C6A6F6E 
- 1275      5C446F77 
- 1275      6E6C6F61 
- 1276 029a 61737465 		.ascii	"aster\\Server.cydsn\000"
- 1276      725C5365 
- 1276      72766572 
- 1276      2E637964 
- 1276      736E00
+ 1267      5C6A6F6E 
+ 1267      5C446F63 
+ 1267      756D656E 
+ 1268 0252 44656D6F 		.ascii	"Demo\\Server.cydsn\000"
+ 1268      5C536572 
+ 1268      7665722E 
+ 1268      63796473 
+ 1268      6E00
+ 1269              	.LASF7:
+ 1270 0264 6C6F6E67 		.ascii	"long int\000"
+ 1270      20696E74 
+ 1270      00
+ 1271              	.LASF2:
+ 1272 026d 6C6F6E67 		.ascii	"long double\000"
+ 1272      20646F75 
+ 1272      626C6500 
+ 1273              	.LASF3:
+ 1274 0279 7369676E 		.ascii	"signed char\000"
+ 1274      65642063 
+ 1274      68617200 
+ 1275              	.LASF35:
+ 1276 0285 47656E65 		.ascii	"Generated_Source\\PSoC4\\cyfitter_cfg.c\000"
+ 1276      72617465 
+ 1276      645F536F 
+ 1276      75726365 
+ 1276      5C50536F 
  1277              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

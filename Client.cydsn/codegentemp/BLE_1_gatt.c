@@ -108,9 +108,10 @@ CYBLE_STATE_T cyBle_state;
     0x000Du,    /* Handle of the Client Characteristic Configuration descriptor */
 };
     
-    static uint8 cyBle_attValues[0x08u] = {
+    static uint8 cyBle_attValues[0x12u] = {
     /* Device Name */
-    
+    (uint8)'C', (uint8)'l', (uint8)'i', (uint8)'e', (uint8)'n', (uint8)'t', (uint8)' ', (uint8)'B', (uint8)'L',
+    (uint8)'E',
 
     /* Appearance */
     0x00u, 0x00u,
@@ -130,18 +131,18 @@ uint8 cyBle_attValuesCCCD[CYBLE_GATT_DB_CCCD_COUNT];
 #endif /* CYBLE_GATT_DB_CCCD_COUNT != 0u */
 
 CYBLE_GATTS_ATT_GEN_VAL_LEN_T cyBle_attValuesLen[CYBLE_GATT_DB_ATT_VAL_COUNT] = {
-    { 0x0000u, (void *)&cyBle_attValues[0] }, /* Device Name */
-    { 0x0002u, (void *)&cyBle_attValues[0] }, /* Appearance */
-    { 0x0001u, (void *)&cyBle_attValues[2] }, /* Central Address Resolution */
-    { 0x0001u, (void *)&cyBle_attValues[3] }, /* Resolvable Private Address Only */
-    { 0x0004u, (void *)&cyBle_attValues[4] }, /* Service Changed */
+    { 0x000Au, (void *)&cyBle_attValues[0] }, /* Device Name */
+    { 0x0002u, (void *)&cyBle_attValues[10] }, /* Appearance */
+    { 0x0001u, (void *)&cyBle_attValues[12] }, /* Central Address Resolution */
+    { 0x0001u, (void *)&cyBle_attValues[13] }, /* Resolvable Private Address Only */
+    { 0x0004u, (void *)&cyBle_attValues[14] }, /* Service Changed */
     { 0x0002u, (void *)&cyBle_attValuesCCCD[0] }, /* Client Characteristic Configuration */
 };
 
 const CYBLE_GATTS_DB_T cyBle_gattDB[0x0Du] = {
     { 0x0001u, 0x2800u /* Primary service                     */, 0x00000001u /*       */, 0x0009u, {{0x1800u, NULL}}                           },
     { 0x0002u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0003u, {{0x2A00u, NULL}}                           },
-    { 0x0003u, 0x2A00u /* Device Name                         */, 0x01020001u /* rd    */, 0x0003u, {{0x0000u, (void *)&cyBle_attValuesLen[0]}} },
+    { 0x0003u, 0x2A00u /* Device Name                         */, 0x01020001u /* rd    */, 0x0003u, {{0x000Au, (void *)&cyBle_attValuesLen[0]}} },
     { 0x0004u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0005u, {{0x2A01u, NULL}}                           },
     { 0x0005u, 0x2A01u /* Appearance                          */, 0x01020001u /* rd    */, 0x0005u, {{0x0002u, (void *)&cyBle_attValuesLen[1]}} },
     { 0x0006u, 0x2803u /* Characteristic                      */, 0x00020001u /* rd    */, 0x0007u, {{0x2AA6u, NULL}}                           },
